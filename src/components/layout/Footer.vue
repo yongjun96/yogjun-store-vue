@@ -1,16 +1,26 @@
-<template>
-  <footer>
-    <p>https://velog.io/@comet_strike/series/%EC%82%AC%EC%9D%B4%EB%93%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8</p>
-  </footer>
-
-</template>
 <script>
 export default{
 
 }
-
 </script>
 
+
+
+<template>
+  <footer>
+    <p>푸터입니다.</p>
+  </footer>
+</template>
+
+
+
 <style>
+
+footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 10%;
+}
 
 </style>

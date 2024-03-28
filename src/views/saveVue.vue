@@ -1,7 +1,5 @@
 <script>
 import axios from 'axios'
-import Header from '@/components/layout/Header.vue';
-import Footer from '@/components/layout/Footer.vue';
 
 export default {
 
@@ -66,9 +64,15 @@ export default {
 
 <template>
 
-  <div id="all">
-    <Header />
+  <body>
+
+  <div id="app">
+    <router-link to="/">Home</router-link>
+    <router-link to="/createPost">createPost</router-link>
+    <router-link to="/post">createPost</router-link>
+    <router-view></router-view>
   </div>
+
 
   <dev @click="memberLogin">l,m</dev>
   <a @click="popup">구글 로그인</a>
@@ -83,7 +87,6 @@ export default {
   </div>
 
 
-  <body>
   <div v-for="(a,i) in product" :key="a">
     <img v-if="a" :src=picture[i] class="pictureClass" @click="modalOpenAndClose">
     <h2>{{ a }}</h2>
@@ -121,6 +124,7 @@ body{
 
 div{
   box-sizing: border-box;
+
 }
 
 .black-bg{

@@ -1,35 +1,127 @@
 @import './base.css';
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+/*#app {*/
+/*  max-width: 1280px;*/
+/*  margin: 0 auto;*/
+/*  padding: 2rem;*/
+/*  font-weight: normal;*/
+/*}*/
+
+/*a,*/
+/*.green {*/
+/*  text-decoration: none;*/
+/*  color: hsla(160, 100%, 37%, 1);*/
+/*  transition: 0.4s;*/
+/*  padding: 3px;*/
+/*}*/
+
+/*@media (hover: hover) {*/
+/*  a:hover {*/
+/*    background-color: hsla(160, 100%, 37%, 0.2);*/
+/*  }*/
+/*}*/
+
+/*@media (min-width: 1024px) {*/
+/*  body {*/
+/*    display: flex;*/
+/*    place-items: center;*/
+/*  }*/
+
+/*  #app {*/
+/*    display: grid;*/
+/*    grid-template-columns: 1fr 1fr;*/
+/*    padding: 0 2rem;*/
+/*  }*/
+/*}*/
+
+/* 헤더에 대한 스타일 */
+header {
+    background-color: #333; /* 헤더 배경색 */
+    color: white; /* 헤더 텍스트 색상 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    padding: 20px; /* 내부 여백 */
+    position: fixed; /* 화면 상단에 고정 */
+    top: 0; /* 화면 상단에 위치 */
+    left: 0; /* 왼쪽 정렬 */
+    width: 100%; /* 전체 너비 */
+    z-index: 999; /* 다른 요소 위에 표시 */
+
+    height: 140px; /* 헤더의 높이를 조절하세요 */
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+#headerTitle {
+    font-size: xx-large;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
+body {
+    margin-top: 140px; /* 헤더의 높이만큼 컨텐츠 아래 여백 설정 */
+    //margin: 0;
+    padding: 0;
+    height: 100%;
     display: flex;
-    place-items: center;
-  }
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9; /* 배경색 설정 */
+}
+.content {
+    margin-top: 60px; /* 헤더와 컨텐츠 사이의 간격을 조절하세요 */
+    flex: 1;
+}
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: sticky;
+    bottom: 0;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+
+/*------------------------------------------------------------------------------------------------------*/
+
+
+/* 링크 텍스트의 색상 수정 */
+a {
+    font-size: 22px;
+    color: #ffffff; /* 링크의 기본 색상을 파란색으로 설정 */
+}
+/* 방문한 링크의 색상 수정 */
+a:visited {
+    color: #ffffff; /* 방문한 링크의 색상을 보라색으로 설정 */
+}
+/* 링크에 마우스를 올렸을 때의 색상 수정 */
+a:hover {
+    color: #9499e8; /* 마우스를 올렸을 때 링크의 색상을 빨간색으로 설정 */
+}
+
+nav {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    margin: 0 8%; /* 메뉴 항목 간의 간격 */
+}
+nav a:hover {
+    background-color: #555;
+}
+
+/*------------------------------------------------------------------------------------------------------*/
+
+/* 컨텐츠를 화면 중앙에 정렬하는 스타일 */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* 화면의 80%만큼의 높이를 가짐 */
+}
+.content {
+    text-align: center;
+    width: 80%; /* 컨텐츠의 너비를 80%로 설정 */
+    padding: 20px;
+    /*border: 1px solid #ddd; !* 가시성을 위한 보더 추가 *!*/
+    border-radius: 5px; /* 보더의 모서리를 둥글게 만듦 */
+    background-color: #f9f9f9; /* 배경색 지정 */
 }
