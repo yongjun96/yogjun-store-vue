@@ -60,7 +60,7 @@ export default {
     },
 
     getGoogleAuthUrl() {
-      return `${process.env.VUE_APP_API_URL}/oauth2/authorization/google`;
+      return `${import.meta.env.VITE_APP_API_URL}/oauth2/authorization/google`;
     }
 
   }

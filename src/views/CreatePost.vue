@@ -6,17 +6,27 @@ export default {
 
   data() {
     return {
-      room: {
-        id: null,
+      roomPostRequest: {
+        id: '',
         name: '',
-        price: ''
-        // 나머지 입력 항목들 초기화
+        deposit: '전세',
+        depositPrice: '',
+        monthlyPrice: '',
+        description: '',
+        roomOwner: '',
+        detail: '',
+        squareFootage: '',
+        content: '',
+        address: '',
+        roomStatus: '임대',
+        memberId: ''
       },
 
       token: '',
       email: '',
       name: '',
-      role: ''
+      role: '',
+      files: []
     };
   },
 
@@ -29,10 +39,12 @@ export default {
     this.email = decodedPayload.sub;
     this.role = decodedPayload.role;
 
+    this.findMember();
+
     console.log(this.email); // 토큰에 포함된 사용자 ID 출력
     console.log(this.role); // 토큰에 포함된 사용자 유형 출력
 
-    this.findMember();
+
   },
 
   created() {},
@@ -48,12 +60,8 @@ export default {
           })
 
           .then(response => {
-            console.log(response.data);
-
-            this.email = response.data.email;
             this.name = response.data.name;
-            this.role = response.data.role;
-
+            this.roomPostRequest.memberId = response.data.id;
           })
           .catch(error => {
             console.log(error.response.data.code);
@@ -62,10 +70,57 @@ export default {
               this.emailErrorMessage = error.response.data.message;
               return;
             }
-
             console.error('Error fetching data:', error);
           })
     },
+
+    async createRoomPost() {
+
+      // 사진을 한장도 업로드 하지 않을 경우
+      if(this.files.length <= 0){
+        console.log("사진을 한장 이상 등록해 주세요.");
+        return;
+      }
+
+      this.roomPostRequest.roomOwner = this.name;
+      console.log(this.roomPostRequest);
+
+      const formData = new FormData();
+
+      // roomPostDto를 JSON으로 미리 변환해서 formData에 넣는다.
+      for (const key in this.roomPostRequest) {
+        if (Object.prototype.hasOwnProperty.call(this.roomPostRequest, key)) {
+          formData.append(key, this.roomPostRequest[key]);
+          console.log(this.roomPostRequest[key]);
+        }
+      }
+
+      // 업로드된 이미지 uploadImages 담기.
+      for (let i = 0; i < this.files.length; i++) {
+        formData.append('uploadImages', this.files[i]);
+      }
+
+
+      axios.post(import.meta.env.VITE_APP_API_URL + '/roomPost/create', formData, {
+        headers: {
+          'Authorization': `Bearer ${this.token}`,
+          'Content-Type': 'multipart/form-data',
+          //'Content-Type': 'application/json'
+        }
+      })
+          .then(() => {console.log("방 글 완료");})
+
+          .catch(error => {
+            console.log(error.response.data);
+            console.error('Error fetching data:', error);
+          })
+    },
+
+    handleFileChange(event) {
+      this.files = event.target.files;
+      console.log(this.files);
+    }
+
 
   },
 
@@ -83,16 +138,16 @@ export default {
   <table>
     <tr>
       <th><label for="name">방 이름</label></th>
-      <td><input type="text" id="name" name="name" placeholder=" ex). 마포구 원룸"></td>
+      <td><input type="text" id="name" name="name" v-model="roomPostRequest.name" placeholder=" ex). 마포구 원룸"></td>
     </tr>
 
     <tr>
       <th><label for="deposit">전세 및 보증금</label></th>
       <td>
         <div class="select-box">
-        <select name="deposit" id="deposit">
+        <select name="deposit" id="deposit" v-model="roomPostRequest.deposit">
           <option value="전세">전세</option>
-          <option value="보증급">보증금</option>
+          <option value="보증금">보증금</option>
         </select>
       </div>
       </td>
@@ -100,27 +155,17 @@ export default {
 
     <tr>
       <th><label for="depositPrice">전세 및 보증금 가격</label></th>
-      <td><input type="text" id="depositPrice" name="depositPrice" placeholder=" ex). 5000"></td>
+      <td><input type="number" id="depositPrice" name="depositPrice" v-model="roomPostRequest.depositPrice" placeholder=" ex). 5000"></td>
     </tr>
 
     <tr>
       <th><label for="monthlyPrice">월세</label></th>
-      <td><input type="text" id="monthlyPrice" name="monthlyPrice" placeholder=" ex). 50"></td>
+      <td><input type="number" id="monthlyPrice" name="monthlyPrice" v-model="roomPostRequest.monthlyPrice" placeholder=" ex). 50"></td>
     </tr>
 
     <tr>
-      <th><label for="monthlyPrice">방설명</label></th>
-      <td><textarea id="monthlyPrice" name="monthlyPrice" type="text" placeholder=" ex). 마포구 가장 저렴하고 좋은 방"></textarea></td>
-    </tr>
-
-    <tr>
-      <th><label for="mainPhoto">방 메인 사진</label></th>
-      <td>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="mainPhoto" id="mainPhoto">
-        <button class="upload-button" type="submit">메인 사진 올리기</button>
-        </form>
-      </td>
+      <th><label for="description">방설명</label></th>
+      <td><textarea id="description" name="description" type="text" v-model="roomPostRequest.description" placeholder=" ex). 마포구 가장 저렴하고 좋은 방"></textarea></td>
     </tr>
 
     <tr>
@@ -130,29 +175,29 @@ export default {
 
     <tr>
       <th><label for="detail">방 세부 사항</label></th>
-      <td><textarea id="detail" name="detail" type="text" placeholder=" ex). 남향, 역까지 걸어서 5분"></textarea></td>
+      <td><textarea id="detail" name="detail" type="text" v-model="roomPostRequest.detail" placeholder=" ex). 남향, 역까지 걸어서 5분"></textarea></td>
     </tr>
 
     <tr>
       <th><label for="squareFootage">평수</label></th>
-      <td><input type="text" id="squareFootage" name="squareFootage" placeholder=" ex). 6평"></td>
+      <td><input type="number" id="squareFootage" name="squareFootage" v-model="roomPostRequest.squareFootage" placeholder=" ex). 6평"></td>
     </tr>
 
     <tr>
       <th><label for="content">내용</label></th>
-      <td><textarea id="content" name="content" type="text" placeholder=" ex). 마포구에 위치한 좋은 방이고 관리비가 없으며, 필요사항 있으면 바로 처리해 드립니다."></textarea></td>
+      <td><textarea id="content" name="content" type="text" v-model="roomPostRequest.content" placeholder=" ex). 마포구에 위치한 좋은 방이고 관리비가 없으며, 필요사항 있으면 바로 처리해 드립니다."></textarea></td>
     </tr>
 
     <tr>
       <th><label for="address">주소</label></th>
-      <td><input type="text" id="address" name="address" placeholder=" ex). 마포구 월드컵북로 27길 78-571 마포빌라 101호"></td>
+      <td><input type="text" id="address" name="address" v-model="roomPostRequest.address" placeholder=" ex). 마포구 월드컵북로 27길 78-571 마포빌라 101호"></td>
     </tr>
 
     <tr>
       <th><label for="roomStatus">상태</label></th>
       <td>
         <div class="select-box">
-          <select name="roomStatus" id="roomStatus">
+          <select name="roomStatus" id="roomStatus" v-model="roomPostRequest.roomStatus">
             <option value="매매">매매</option>
             <option value="임대">임대</option>
             <option value="종료">종료</option>
@@ -161,21 +206,20 @@ export default {
       </td>
     </tr>
 
+
     <tr>
-      <th><label for="mainPhoto">방 메인 사진</label></th>
+      <th><label for="file">방 사진</label></th>
       <td>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-          <input type="file" name="mainPhoto" id="mainPhoto" multiple>
-          <button class="upload-button" type="submit">서브 사진 여러장 올리기</button>
-        </form>
+        <div>
+          <input type="file" @change="handleFileChange" multiple>
+        </div>
       </td>
     </tr>
 
 
-
     <!-- 추가 필드들을 여기에 추가할 수 있습니다 -->
   </table>
-  <button class="subBtn" type="submit">제출</button>
+  <button class="subBtn" @click="createRoomPost">제출</button>
 
 </template>
 
