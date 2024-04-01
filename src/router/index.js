@@ -4,6 +4,7 @@ import Signup from '../views/signup.vue'
 import Login from '../views/Login.vue'
 import App from '../views/App.vue'
 import Home from '../views/Home.vue'
+import PostList from '../views/PostList.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import {createApp} from "vue";
@@ -12,6 +13,12 @@ import VueJwtDecode from "vue-jwt-decode";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/postList',
+      name: 'PostList',
+      component: PostList
+    },
+
     {
       path: '/',
       name: 'Home',

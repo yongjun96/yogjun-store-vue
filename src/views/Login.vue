@@ -168,7 +168,7 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
   text-decoration: none; /* 아래 밑줄 제거 */
-  line-height: 36px; /* 버튼 세로 가운데 정렬을 위해 추가 */
+  line-height: 30px; /* 버튼 세로 가운데 정렬을 위해 추가 */
 }
 
 .google-signin-button:hover {
@@ -183,15 +183,16 @@ export default {
 .google-icon {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 8px;
-  width: 18px;
-  height: 18px;
-  background-image: url('https://developers.google.com/identity/images/g-logo.png');
+  padding-bottom: 20px;
+  width: 20px;
+  background-image: url('./src/assets/googleLogo.png');
   background-size: cover;
 }
 
 .button-text {
   vertical-align: middle;
+  display: inline;
+  color: #3273dc;
 }
 
 </style>

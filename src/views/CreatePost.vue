@@ -8,7 +8,8 @@ export default {
     return {
       roomPostRequest: {
         id: '',
-        name: '',
+        title: '',
+        roomName: '',
         deposit: '전세',
         depositPrice: '',
         monthlyPrice: '',
@@ -21,12 +22,30 @@ export default {
         roomStatus: '임대',
         memberId: ''
       },
+      roomPostError: {
+        idError: '',
+        title: '',
+        roomNameError: '',
+        depositError: '',
+        depositPriceError: '',
+        monthlyPriceError: '',
+        descriptionError: '',
+        roomOwnerError: '',
+        detailError: '',
+        squareFootageError: '',
+        contentError: '',
+        addressError: '',
+        roomStatusError: '',
+        memberIdError: ''
+      },
 
       token: '',
       email: '',
       name: '',
       role: '',
-      files: []
+      files: [],
+      showModal: false,
+      signupMessageOne: ''
     };
   },
 
@@ -78,12 +97,12 @@ export default {
 
       // 사진을 한장도 업로드 하지 않을 경우
       if(this.files.length <= 0){
-        console.log("사진을 한장 이상 등록해 주세요.");
+        this.signupMessageOne = '사진을 한장 이상 등록해 주세요.';
+        this.openModal();
         return;
       }
 
       this.roomPostRequest.roomOwner = this.name;
-      console.log(this.roomPostRequest);
 
       const formData = new FormData();
 
@@ -105,13 +124,26 @@ export default {
         headers: {
           'Authorization': `Bearer ${this.token}`,
           'Content-Type': 'multipart/form-data',
-          //'Content-Type': 'application/json'
         }
       })
           .then(() => {console.log("방 글 완료");})
 
           .catch(error => {
-            console.log(error.response.data);
+
+            if(error.response.data !== null){
+              this.roomPostError.titleError = error.response.data.title;
+              this.roomPostError.roomNameError = error.response.data.roomName;
+              this.roomPostError.depositError = error.response.data.deposit;
+              this.roomPostError.depositPriceError = error.response.data.depositPrice;
+              this.roomPostError.monthlyPriceError = error.response.data.monthlyPrice;
+              this.roomPostError.roomOwnerError = error.response.data.roomOwner;
+              this.roomPostError.squareFootageError = error.response.data.squareFootage;
+              this.roomPostError.contentError = error.response.data.content;
+              this.roomPostError.addressError = error.response.data.address;
+              this.roomPostError.roomStatusError = error.response.data.roomStatus;
+              console.log(error.response.data.memberId);
+            }
+
             console.error('Error fetching data:', error);
           })
     },
@@ -119,6 +151,13 @@ export default {
     handleFileChange(event) {
       this.files = event.target.files;
       console.log(this.files);
+    },
+
+    openModal() {
+      this.showModal = true; // 모달 열기
+    },
+    closeModal() {
+      this.showModal = false; // 모달 닫기
     }
 
 
@@ -131,14 +170,38 @@ export default {
 
 <template>
 
+  <!-- 모달 -->
+  <div class="modal" :class="{ 'is-active': showModal }">
+    <div class="modal-background" @click="closeModal"></div>
+    <div class="modal-content">
+      <!-- 모달 내용 -->
+      <div class="box">
+        <p>{{signupMessageOne}}</p>
+      </div>
+    </div>
+    <button class="modal-close is-large" @click="closeModal"></button>
+  </div>
+  <!-- 모달 끝 -->
+
   <div class="createPost" id="app">
     <h1>글작성 페이지 입니다.</h1>
   </div>
 
   <table>
     <tr>
+      <th><label for="title">제목</label></th>
+      <td>
+        <input type="text" id="title" name="title" v-model="roomPostRequest.title" placeholder=" ex). 제목">
+        <span>{{this.roomPostError.titleError}}</span>
+      </td>
+    </tr>
+
+    <tr>
       <th><label for="name">방 이름</label></th>
-      <td><input type="text" id="name" name="name" v-model="roomPostRequest.name" placeholder=" ex). 마포구 원룸"></td>
+      <td>
+        <input type="text" id="roomName" name="roomName" v-model="roomPostRequest.roomName" placeholder=" ex). 마포구 원룸">
+        <span>{{this.roomPostError.roomNameError}}</span>
+      </td>
     </tr>
 
     <tr>
@@ -150,27 +213,39 @@ export default {
           <option value="보증금">보증금</option>
         </select>
       </div>
+        <span>{{this.roomPostError.depositError}}</span>
       </td>
     </tr>
 
     <tr>
       <th><label for="depositPrice">전세 및 보증금 가격</label></th>
-      <td><input type="number" id="depositPrice" name="depositPrice" v-model="roomPostRequest.depositPrice" placeholder=" ex). 5000"></td>
+      <td>
+        <input type="number" id="depositPrice" name="depositPrice" v-model="roomPostRequest.depositPrice" placeholder=" ex). 5000">
+        <span>{{this.roomPostError.depositPriceError}}</span>
+      </td>
     </tr>
 
     <tr>
       <th><label for="monthlyPrice">월세</label></th>
-      <td><input type="number" id="monthlyPrice" name="monthlyPrice" v-model="roomPostRequest.monthlyPrice" placeholder=" ex). 50"></td>
+      <td>
+        <input type="number" id="monthlyPrice" name="monthlyPrice" v-model="roomPostRequest.monthlyPrice" placeholder=" ex). 50">
+        <span>{{this.roomPostError.monthlyPriceError}}</span>
+      </td>
     </tr>
 
     <tr>
       <th><label for="description">방설명</label></th>
-      <td><textarea id="description" name="description" type="text" v-model="roomPostRequest.description" placeholder=" ex). 마포구 가장 저렴하고 좋은 방"></textarea></td>
+      <td>
+        <textarea id="description" name="description" type="text" v-model="roomPostRequest.description" placeholder=" ex). 마포구 가장 저렴하고 좋은 방"></textarea>
+      </td>
     </tr>
 
     <tr>
       <th><label for="roomOwner">방 주인</label></th>
-      <td><input type="text" id="roomOwner" name="roomOwner" :value="name" disabled></td>
+      <td>
+        <input type="text" id="roomOwner" name="roomOwner" :value="name" disabled>
+        <span>{{this.roomPostError.roomOwnerError}}</span>
+      </td>
     </tr>
 
     <tr>
@@ -180,17 +255,26 @@ export default {
 
     <tr>
       <th><label for="squareFootage">평수</label></th>
-      <td><input type="number" id="squareFootage" name="squareFootage" v-model="roomPostRequest.squareFootage" placeholder=" ex). 6평"></td>
+      <td>
+        <input type="number" id="squareFootage" name="squareFootage" v-model="roomPostRequest.squareFootage" placeholder=" ex). 6평">
+        <span>{{this.roomPostError.squareFootageError}}</span>
+      </td>
     </tr>
 
     <tr>
       <th><label for="content">내용</label></th>
-      <td><textarea id="content" name="content" type="text" v-model="roomPostRequest.content" placeholder=" ex). 마포구에 위치한 좋은 방이고 관리비가 없으며, 필요사항 있으면 바로 처리해 드립니다."></textarea></td>
+      <td>
+        <textarea id="content" name="content" type="text" v-model="roomPostRequest.content" placeholder=" ex). 마포구에 위치한 좋은 방이고 관리비가 없으며, 필요사항 있으면 바로 처리해 드립니다."></textarea>
+        <span>{{this.roomPostError.contentError}}</span>
+      </td>
     </tr>
 
     <tr>
       <th><label for="address">주소</label></th>
-      <td><input type="text" id="address" name="address" v-model="roomPostRequest.address" placeholder=" ex). 마포구 월드컵북로 27길 78-571 마포빌라 101호"></td>
+      <td>
+        <input type="text" id="address" name="address" v-model="roomPostRequest.address" placeholder=" ex). 마포구 월드컵북로 27길 78-571 마포빌라 101호">
+        <span>{{this.roomPostError.addressError}}</span>
+      </td>
     </tr>
 
     <tr>
@@ -203,6 +287,7 @@ export default {
             <option value="종료">종료</option>
           </select>
         </div>
+        <span>{{this.roomPostError.roomStatusError}}</span>
       </td>
     </tr>
 
@@ -328,6 +413,55 @@ textarea {
 
 .upload-button:hover {
   background-color: #0056b3;
+}
+
+span {
+  display: block;
+  color: red;
+}
+
+/*-----------------------------------------------------------------------------------------------------------------*/
+
+/* 모달 스타일 */
+.modal {
+  position: fixed; /* 고정 위치 */
+  top: 25%; /* 화면 상단에서 50% 위치 */
+  left: 50%; /* 화면 왼쪽에서 50% 위치 */
+  width: 50%; /* 모달 너비 */
+  height: 50%; /* 모달 높이 */
+  margin-top: 0%; /* 모달 높이의 절반만큼 위로 이동하여 정 중앙으로 위치 */
+  margin-left: -25%; /* 모달 너비의 절반만큼 왼쪽으로 이동하여 정 중앙으로 위치 */
+  z-index: 9999; /* 다른 요소 위에 표시 */
+}
+.modal.is-active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 400px;
+  text-align: center;
+  z-index: 999;
+}
+.modal-close {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #fff;
 }
 
 </style>
