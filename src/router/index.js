@@ -5,10 +5,12 @@ import Login from '../views/Login.vue'
 import App from '../views/App.vue'
 import Home from '../views/Home.vue'
 import PostList from '../views/PostList.vue'
+import PostInfo from '../views/PostInfo.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import {createApp} from "vue";
 import VueJwtDecode from "vue-jwt-decode";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +19,12 @@ const router = createRouter({
       path: '/postList',
       name: 'PostList',
       component: PostList
+    },
+
+    {
+      path: '/postInfo',
+      name: 'PostInfo',
+      component: PostInfo
     },
 
     {
@@ -45,13 +53,13 @@ const router = createRouter({
   ]
 })
 
-// 네비게이션 가드를 사용하여 페이지가 변경될 때마다 로그인 상태를 확인합니다.
+// 네비게이션 가드를 사용하여 페이지가 변경될 때마다 로그인 상태를 확인
 router.beforeEach(async (to, from, next) => {
   const isAuthenticated = localStorage.getItem('accessToken') !== null;
   //console.log("네비게이션 가드 실행됨");
 
 
-  // 로그인이 필요한 페이지인 경우, 로그인하지 않은 경우 로그인 페이지로 리다이렉트합니다.
+  // 로그인이 필요한 페이지인 경우, 로그인하지 않은 경우 로그인 페이지로 리다이렉트
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/login'); // 로그인 페이지로 리다이렉트
   } else {
@@ -81,13 +89,14 @@ router.beforeEach(async (to, from, next) => {
         }
 
       } else {
-        // 토큰이 유효합니다.
+        // 토큰이 유효.
         next();
       }
     } else {
       // 토큰이 없는 경우.
       next();
     }
+
   }
 
 });

@@ -12,9 +12,8 @@ export default {
     return {
       searchContent: '',
       searchOption: 'title',
-      pageSize: '10',
+      pageSize: '4',
       page: '',
-      posts: [], // 게시물 목록 데이터
       currentPage: 0, // 현재 페이지 번호
       totalPages: 1, // 총 페이지 수
       url : `${import.meta.env.VITE_APP_API_URL}`,
@@ -47,7 +46,32 @@ export default {
     }
     },
 
+  // 다른 페이지로 이동할 때 RoomPostListPage페이지 정보 저장
+  beforeRouteLeave(to, from, next) {
+    localStorage.setItem('RoomPostListPage', this.currentPage);
+    next();
+  },
+
+  watch: {
+    '$route.query.page'(newPage, oldPage) {
+      if(newPage !== oldPage){
+        if (!newPage) {
+          // 새 페이지 번호가 없는 경우 뒤로 가기로 인식됩니다.
+          this.currentPage = oldPage -1  || 1; // 이전 페이지 번호가 있으면 그 번호로, 없으면 1페이지로 설정
+        } else {
+          this.currentPage = newPage -1; // 새 페이지로 설정
+        }
+        this.getRoomPostList();
+      }
+    }
+  },
+
   mounted() {
+    const savedPage = localStorage.getItem('RoomPostListPage');
+    if (savedPage) {
+      this.currentPage = parseInt(savedPage);
+      localStorage.removeItem('RoomPostListPage'); // 페이지 번호를 가져온 후 로컬 스토리지에서 제거
+    }
     this.getRoomPostList();
   },
 
@@ -58,8 +82,8 @@ export default {
         params: {
           searchContent: this.searchContent,
           searchOption: this.searchOption,
-            page: this.currentPage, // 현재 페이지 번호
-            size: this.pageSize // 총 페이지 수
+          page: this.currentPage, // 현재 페이지 번호
+          size: this.pageSize // 총 페이지 수
 
         },
         headers: {
@@ -75,10 +99,11 @@ export default {
 
             // 총 카운트
             this.totalPages = response.data.totalPages;
-            console.log("총 카운트 : "+response.data.totalPages);
+            console.log("총 카운트 : " + response.data.totalPages);
 
 
             this.roomPost = content.map(item => ({
+              id: item.id,
               title: item.title,
               roomName: item.roomName,
               address: item.address,
@@ -115,21 +140,25 @@ export default {
       this.getRoomPostList();
     },
 
-    calculationPrice(price){
-      if(price >= 10000){
+    calculationPrice(price) {
+      if (price >= 10000) {
         price = price / 10000;
-        return price = price+"억";
-      }else{
-        return price+"만원";
+        return price = price + "억";
+      } else if (price <= 0) {
+        price = "없음";
+        return price;
+      } else {
+        return price + "만원";
       }
-    }
+    },
 
-  },
-
-
-
-
-
+    movePostInfo(id) {
+      this.$router.push({
+        path: '/postInfo',
+        query: {id: id,} // 전달할 데이터를 객체로 넘깁니다.
+      });
+    },
+  }
 };
 </script>
 
@@ -138,7 +167,7 @@ export default {
   <div class="post-list">
     <h2 class="post-list-title">게시물 목록</h2>
     <div class="post-list-items">
-      <div v-for="item in roomPost" :key="item.id" class="post-item">
+      <div v-for="item in roomPost" :key="item.id" class="post-item" @click="movePostInfo(item.id)">
         <div class="thumbnail">
           <img :src="item.urlPath" alt="썸네일 이미지">
 
@@ -152,7 +181,6 @@ export default {
             <br>
             {{"주소 : "+item.address}}
           </p>
-          <router-link :to="'/post/' + item.id" class="post-link">자세히 보기</router-link>
         </div>
       </div>
     </div>

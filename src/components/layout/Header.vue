@@ -5,7 +5,7 @@
     <nav>
       <router-link to="/">메인</router-link>
       <router-link to="/createPost">글작성</router-link>
-      <router-link to="/postList">글목록</router-link>
+      <router-link :to="{ path: '/postList', query: { page: 1 } }">글목록</router-link>
 
       <!-- 로그인/로그아웃 링크를 동적으로 표시 -->
       <router-link v-if="isLoggedIn" @click="logout" to="#">로그아웃</router-link>

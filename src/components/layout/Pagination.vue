@@ -30,20 +30,32 @@ export default {
       return pages;
     }
   },
+
   methods: {
     goToPage(page) {
       this.$emit('page-change', page);
+
+      this.$router.push({ path: '/postList', query: { page: page + 1 } });
     },
     prevPage() {
       if (this.currentPage > 0) {
         this.$emit('page-change', this.currentPage - 1);
+
+        const page = this.currentPage - 1;
+
+        this.$router.push({ path: '/postList', query: { page: page + 1} });
       }
     },
     nextPage() {
       if (this.currentPage < this.totalPages - 1) {
         this.$emit('page-change', this.currentPage + 1);
+
+        const page = this.currentPage + 1;
+
+        this.$router.push({ path: '/postList', query: { page: page + 1} });
       }
-    }
+    },
+
   }
 };
 </script>
@@ -53,6 +65,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 }
 .pagination button {
   margin: 0 5px;
