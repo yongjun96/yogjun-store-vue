@@ -70,6 +70,10 @@ export default {
             this.roomPost.member.id = content.member.id;
             this.roomPost.member.name = content.member.name;
             this.roomPost.member.email = content.member.email;
+            this.roomPost.roomOwner = content.member.name;
+
+            this.roomPost.description = content.description;
+            this.roomPost.detail = content.detail;
             this.roomPost.imagesList = content.imagesList.map(image => ({
               id: image.id,
               name: image.name,
@@ -94,6 +98,18 @@ export default {
         this.currentIndex--;
       }
     },
+
+    calculationPrice(price) {
+      if (price >= 10000) {
+        price = price / 10000;
+        return price = price + "억";
+      } else if (price <= 0) {
+        price = "없음";
+        return price;
+      } else {
+        return price + "만원";
+      }
+    },
   }
 }
 
@@ -105,7 +121,6 @@ export default {
   <div class="room-detail">
     <div class="room-header">
       <h1>{{ roomPost.title }}</h1>
-      <p>{{ roomPost.address }}</p>
     </div>
     <div class="image-slider">
       <div class="slide">
@@ -116,7 +131,25 @@ export default {
       <button @click="prevSlide" :disabled="currentIndex === 0">Previous</button>
       <button @click="nextSlide" :disabled="currentIndex === roomPost.imagesList.length - 1">Next</button>
     </div>
+    <div class="room-info">
+      <h1>Room Information</h1>
+      <h2>{{ roomPost.roomName }}</h2>
+      <h3>{{"주소 : "+ roomPost.address }}</h3>
+      <br>
+      <h3>{{ roomPost.content }}</h3>
+      <br>
+      <h3>{{ roomPost.description }}</h3>
+      <br>
+      <h3>{{ roomPost.detail }}</h3>
+      <br>
 
+      <h3> {{ roomPost.deposit +" : "+calculationPrice(roomPost.depositPrice) }}</h3>
+      <h3>{{ "보증금 및 월세 : "+ calculationPrice(roomPost.monthlyPrice) }}</h3>
+
+      <h3>{{ "평수 : "+roomPost.squareFootage+"평" }}</h3>
+      <h3>{{"작성자 : "+ roomPost.roomOwner }}</h3>
+      <h3>{{"작성자 이메일 : "+ roomPost.member.email }}</h3>
+    </div>
   </div>
 
 </template>
@@ -152,6 +185,7 @@ export default {
   text-align: center;
 }
 
+
 .navigation button {
   margin: 0 10px;
   padding: 5px 10px;
@@ -165,5 +199,24 @@ export default {
 .navigation button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.room-info {
+  margin-top: 20px;
+  border-top: 2px solid #007bff;
+  padding-top: 20px;
+}
+
+.room-info h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.room-info h3 {
+  margin-bottom: 10px;
+}
+
+.room-info strong {
+  margin-right: 10px;
 }
 </style>

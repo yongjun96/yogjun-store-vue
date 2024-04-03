@@ -15,7 +15,7 @@ export default {
       pageSize: '4',
       page: '',
       currentPage: 0, // 현재 페이지 번호
-      totalPages: 1, // 총 페이지 수
+      totalPages: 0, // 페이징바 개수
       url : `${import.meta.env.VITE_APP_API_URL}`,
       roomPost: [{
         address:'',
@@ -54,14 +54,12 @@ export default {
 
   watch: {
     '$route.query.page'(newPage, oldPage) {
+      localStorage.setItem('RoomPostListPage', this.currentPage);
       if(newPage !== oldPage){
         if (!newPage) {
           // 새 페이지 번호가 없는 경우 뒤로 가기로 인식됩니다.
-          this.currentPage = oldPage -1  || 1; // 이전 페이지 번호가 있으면 그 번호로, 없으면 1페이지로 설정
-        } else {
-          this.currentPage = newPage -1; // 새 페이지로 설정
+          this.currentPage = localStorage.getItem('RoomPostListPage');
         }
-        this.getRoomPostList();
       }
     }
   },
@@ -167,9 +165,9 @@ export default {
   <div class="post-list">
     <h2 class="post-list-title">게시물 목록</h2>
     <div class="post-list-items">
-      <div v-for="item in roomPost" :key="item.id" class="post-item" @click="movePostInfo(item.id)">
+      <div v-for="item in roomPost" :key="item.id" class="post-item">
         <div class="thumbnail">
-          <img :src="item.urlPath" alt="썸네일 이미지">
+          <img :src="item.urlPath" alt="썸네일 이미지" @click="movePostInfo(item.id)">
 
         </div>
         <div class="post-info">

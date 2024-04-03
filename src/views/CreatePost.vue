@@ -3,7 +3,6 @@ import VueJwtDecode from "vue-jwt-decode";
 import axios from "axios";
 
 export default {
-
   data() {
     return {
       roomPostRequest: {

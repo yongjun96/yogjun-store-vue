@@ -6,6 +6,7 @@ import App from '../views/App.vue'
 import Home from '../views/Home.vue'
 import PostList from '../views/PostList.vue'
 import PostInfo from '../views/PostInfo.vue'
+import Profile from '../views/Profile.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import {createApp} from "vue";
@@ -19,6 +20,12 @@ const router = createRouter({
       path: '/postList',
       name: 'PostList',
       component: PostList
+    },
+
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
     },
 
     {
