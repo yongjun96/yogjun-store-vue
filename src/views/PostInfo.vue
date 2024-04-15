@@ -50,7 +50,7 @@ export default {
       axios.get(import.meta.env.VITE_APP_API_URL + '/roomPost/posts/' + this.roomPost.id, {
         headers: {
           'Content-Type': 'application/json', // 요청의 Content-Type 설정
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // 토큰을 포함한 헤더 설정
+          //'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // 토큰을 포함한 헤더 설정
         }
       })
 
