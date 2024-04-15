@@ -208,7 +208,7 @@ export default {
     },
 
     passwordEdit() {
-      axios.patch(import.meta.env.VITE_APP_API_URL + '/auth/passwordEdit',
+      axios.patch(import.meta.env.VITE_APP_API_URL + '/member/passwordEdit',
           {
             email: this.passwordEditRequest.email,
             password: this.passwordEditRequest.password,

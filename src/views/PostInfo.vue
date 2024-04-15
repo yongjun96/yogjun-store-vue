@@ -78,7 +78,9 @@ export default {
               id: image.id,
               name: image.name,
               path: image.path,
-              urlPath: `${this.url}/${image.path}/${image.name}`
+              urlPath: `${image.name}`,
+              // localhost path의 경우
+              //urlPath: `${this.url}/${image.path}/${image.name}`
             }));
 
           })
@@ -156,7 +158,7 @@ export default {
 
 <style>
 .room-detail {
-  max-width: 800px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
 }
@@ -176,7 +178,7 @@ export default {
 }
 
 .slide img {
-  max-width: 800px;
+  max-width: 100%;
   height: 600px;
 }
 

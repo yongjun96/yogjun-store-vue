@@ -115,7 +115,9 @@ export default {
                 email: item.member.email
               },
 
-              urlPath: `${this.url}/${item.imagesList[0].path}/${item.imagesList[0].name}`,
+              // localhost path의 경우
+              // urlPath: `${this.url}/${item.imagesList[0].path}/${item.imagesList[0].name}`,
+              urlPath: `${item.imagesList[0].name}`,
 
               imagesList: item.imagesList.map(image => ({
                 id: image.id,

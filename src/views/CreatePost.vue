@@ -119,7 +119,7 @@ export default {
       }
 
 
-      axios.post(import.meta.env.VITE_APP_API_URL + '/roomPost/create', formData, {
+      axios.post(import.meta.env.VITE_APP_API_URL + '/roomPost/createS3', formData, {
         headers: {
           'Authorization': `Bearer ${this.token}`,
           'Content-Type': 'multipart/form-data',

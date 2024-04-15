@@ -73,7 +73,7 @@ nav a:hover {
 
 .content {
     text-align: center;
-    width: 100%; /* 컨텐츠의 너비를 80%로 설정 */
+    width: 100%; /* 컨텐츠의 너비를 100%로 설정 */
     border-radius: 5px; /* 보더의 모서리를 둥글게 만듦 */
     background-color: #f9f9f9; /* 배경색 지정 */
     padding: 20px; /* 내부 여백 */
