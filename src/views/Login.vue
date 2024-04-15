@@ -72,29 +72,57 @@ export default {
 
 <template>
 
-  <div class="login-container">
-    <h2>로그인</h2>
-    <div class="input-group">
-      <label for="email">이메일:</label>
-      <input type="text" id="email" v-model="postData.email" placeholder="이메일을 입력해주세요."/>
-      <p v-if="emailErrorMessage">{{ emailErrorMessage }}</p>
-    </div>
-    <div class="input-group">
-      <label for="password">비밀번호:</label>
-      <input type="password" id="password" v-model="postData.password" placeholder="비밀번호를 입력해주세요."/>
-      <p v-if="passwordErrorMessage">{{ passwordErrorMessage }}</p>
-    </div>
-    <button class="loginBtn" @click="memberLogin">로그인</button>
+  <!-- PC 화면용 로그인 컨테이너 -->
+  <div class="login-container pc">
+      <h2>로그인</h2>
+      <div class="input-group">
+        <label for="email">이메일:</label>
+        <input type="text" id="email" v-model="postData.email" placeholder="이메일을 입력해주세요."/>
+        <p v-if="emailErrorMessage">{{ emailErrorMessage }}</p>
+      </div>
+      <div class="input-group">
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" v-model="postData.password" placeholder="비밀번호를 입력해주세요."/>
+        <p v-if="passwordErrorMessage">{{ passwordErrorMessage }}</p>
+      </div>
+      <button class="loginBtn" @click="memberLogin">로그인</button>
 
-    <!-- 구글 로그인 추가 -->
-    <div>
-      <a id="google-signin-button" class="google-signin-button" :href="getGoogleAuthUrl()">
-        <span class="google-icon"></span>
-        <span class="button-text">구글 로그인</span>
-      </a>
-    </div>
-
+      <!-- 구글 로그인 추가 -->
+      <div>
+        <a id="google-signin-button" class="google-signin-button" :href="getGoogleAuthUrl()">
+          <span class="google-icon"></span>
+          <span class="button-text">구글 로그인</span>
+        </a>
+      </div>
   </div>
+
+
+  <!-- 모바일 화면용 로그인 컨테이너 -->
+  <div class="login-container mobile">
+      <h2>로그인</h2>
+      <!-- 이메일 입력란 -->
+      <div class="input-group">
+        <label for="email">이메일:</label>
+        <input type="text" id="email" v-model="postData.email" placeholder="이메일을 입력해주세요."/>
+        <p v-if="emailErrorMessage">{{ emailErrorMessage }}</p>
+      </div>
+      <!-- 비밀번호 입력란 -->
+      <div class="input-group">
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" v-model="postData.password" placeholder="비밀번호를 입력해주세요."/>
+        <p v-if="passwordErrorMessage">{{ passwordErrorMessage }}</p>
+      </div>
+      <!-- 로그인 버튼 -->
+      <button class="loginBtn" @click="memberLogin">로그인</button>
+      <!-- 구글 로그인 버튼 -->
+      <div>
+        <a id="google-signin-button" class="google-signin-button" :href="getGoogleAuthUrl()">
+          <span class="google-icon"></span>
+          <span class="button-text">구글 로그인</span>
+        </a>
+      </div>
+  </div>
+
 
 </template>
 
@@ -195,6 +223,37 @@ export default {
   vertical-align: middle;
   display: inline;
   color: #3273dc;
+}
+
+
+
+/* 모바일 화면용 스타일 */
+.login-container.mobile {
+  max-width: 90%; /* 컨테이너 최대 너비 */
+  margin: 50px auto; /* 수직 중앙 정렬 */
+  padding: 20px; /* 내부 여백 */
+}
+
+
+/* 미디어 쿼리 */
+@media (min-width: 768px) {
+  .login-container.mobile {
+    display: none; /* 모바일 화면용 컨테이너 표시 */
+  }
+
+  .login-container.pc {
+    display: block; /* PC 화면용 컨테이너 숨기기 */
+  }
+}
+
+@media (max-width: 767px) {
+  .login-container.pc {
+    display: none; /* PC 화면용 컨테이너 숨기기 */
+  }
+
+  .login-container.mobile {
+    display: block; /* 모바일 화면용 컨테이너 표시 */
+  }
 }
 
 </style>

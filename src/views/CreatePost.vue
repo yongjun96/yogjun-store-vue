@@ -37,7 +37,7 @@ export default {
         roomStatusError: '',
         memberIdError: ''
       },
-
+      isMobile: '',
       token: '',
       email: '',
       name: '',
@@ -49,6 +49,13 @@ export default {
   },
 
   mounted() {
+
+    // 페이지가 로드되었을 때 한 번 실행
+    this.detectDevice();
+
+    // 창 크기가 변경될 때마다 실행
+    window.addEventListener('resize', this.detectDevice);
+
     // 토큰을 분석하여 페이로드를 가져옵니다.
     this.token = localStorage.getItem('accessToken');
     const decodedPayload = VueJwtDecode.decode(this.token);
@@ -61,13 +68,16 @@ export default {
 
     console.log(this.email); // 토큰에 포함된 사용자 ID 출력
     console.log(this.role); // 토큰에 포함된 사용자 유형 출력
-
-
   },
 
   created() {},
 
   methods: {
+
+    detectDevice() {
+      // 미디어 쿼리를 사용하여 화면 너비를 기준으로 모바일 여부 판별
+      this.isMobile = window.matchMedia('(max-width: 768px)').matches;
+    },
 
     findMember() {
       axios.get(import.meta.env.VITE_APP_API_URL+'/member/find/'+this.email,
@@ -125,7 +135,12 @@ export default {
           'Content-Type': 'multipart/form-data',
         }
       })
-          .then(() => {console.log("방 글 완료");})
+          .then(() => {
+            console.log("방 글 작성 완료");
+
+              this.$router.push('/postList');
+
+          })
 
           .catch(error => {
 
@@ -182,9 +197,94 @@ export default {
   </div>
   <!-- 모달 끝 -->
 
-  <div class="createPost" id="app">
-    <h1>글작성 페이지 입니다.</h1>
+
+  <!-- 모바일 화면용 폼 -->
+  <div class="form-container mobile-form" v-if="isMobile">
+    <div class="form-container">
+      <form @submit.prevent="createRoomPost">
+        <div class="form-group">
+          <label for="title">제목</label>
+          <input type="text" id="title" name="title" v-model="roomPostRequest.title" placeholder="제목">
+          <span>{{ roomPostError.titleError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="roomName">방 이름</label>
+          <input type="text" id="roomName" name="roomName" v-model="roomPostRequest.roomName" placeholder="방 이름">
+          <span>{{ roomPostError.roomNameError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="deposit">전세 및 보증금</label>
+          <div class="select-box">
+            <select name="deposit" id="deposit" v-model="roomPostRequest.deposit">
+              <option value="전세">전세</option>
+              <option value="보증금">보증금</option>
+            </select>
+          </div>
+          <span>{{ roomPostError.depositError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="depositPrice">전세 및 보증금 가격</label>
+          <input type="number" id="depositPrice" name="depositPrice" v-model="roomPostRequest.depositPrice" placeholder="가격">
+          <span>{{ roomPostError.depositPriceError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="monthlyPrice">월세</label>
+          <input type="number" id="monthlyPrice" name="monthlyPrice" v-model="roomPostRequest.monthlyPrice" placeholder="월세">
+          <span>{{ roomPostError.monthlyPriceError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="description">방 설명</label>
+          <textarea id="description" name="description" v-model="roomPostRequest.description" placeholder="방 설명"></textarea>
+          <span>{{ roomPostError.descriptionError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="roomOwner">방 주인</label>
+          <input type="text" id="roomOwner" name="roomOwner" :value="name" disabled>
+          <span>{{ roomPostError.roomOwnerError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="detail">방 세부 사항</label>
+          <textarea id="detail" name="detail" v-model="roomPostRequest.detail" placeholder="세부 사항"></textarea>
+          <span>{{ roomPostError.detailError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="squareFootage">평수</label>
+          <input type="number" id="squareFootage" name="squareFootage" v-model="roomPostRequest.squareFootage" placeholder="평수">
+          <span>{{ roomPostError.squareFootageError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="content">내용</label>
+          <textarea id="content" name="content" v-model="roomPostRequest.content" placeholder="내용"></textarea>
+          <span>{{ roomPostError.contentError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="address">주소</label>
+          <input type="text" id="address" name="address" v-model="roomPostRequest.address" placeholder="주소">
+          <span>{{ roomPostError.addressError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="roomStatus">상태</label>
+          <div class="select-box">
+            <select name="roomStatus" id="roomStatus" v-model="roomPostRequest.roomStatus">
+              <option value="매매">매매</option>
+              <option value="임대">임대</option>
+              <option value="종료">종료</option>
+            </select>
+          </div>
+          <span>{{ roomPostError.roomStatusError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="file">방 사진</label>
+          <input type="file" @change="handleFileChange" multiple>
+        </div>
+        <button type="submit" class="subBtn">제출</button>
+      </form>
+    </div>
   </div>
+
+
+  <!-- PC 화면용 폼 -->
+  <div class="form-container pc-form" v-else>
 
   <table>
     <tr>
@@ -300,22 +400,14 @@ export default {
       </td>
     </tr>
 
-
-    <!-- 추가 필드들을 여기에 추가할 수 있습니다 -->
   </table>
   <button class="subBtn" @click="createRoomPost">제출</button>
+
+</div>
 
 </template>
 
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-  }
-}
 
 table {
   width: 50%;
@@ -357,6 +449,42 @@ input[type="text"] {
   text-align: center;
 }
 
+/* 입력 그룹 스타일링 */
+.form-container {
+  padding: 0 20px; /* 좌우 여백 추가 */
+}
+
+.input-group {
+  margin-bottom: 20px; /* 입력 그룹 사이의 간격 설정 */
+}
+
+.input-group label {
+  display: block; /* 라벨을 블록 요소로 설정하여 위아래로 배치 */
+  margin-bottom: 5px; /* 라벨 아래 여백 추가 */
+}
+
+.input-group input,
+.input-group textarea,
+.input-group select {
+  width: 100%; /* 입력 필드를 그룹의 너비에 맞게 설정 */
+  padding: 7px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.subBtn {
+  width: 100%; /* 제출 버튼을 그룹의 너비에 맞게 설정 */
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
 /*----------------------------------------------------------------------------------------------------------*/
 
 .select-box {
@@ -384,7 +512,6 @@ input[type="text"] {
   transform: translateY(-50%);
 }
 
-/*----------------------------------------------------------------------------------------------------------------*/
 
 /* 선택적으로 스타일링을 할 수 있습니다. */
 textarea {
@@ -397,29 +524,12 @@ textarea {
   resize: none; /* 사용자가 크기를 조절할 수 없도록 설정 */
 }
 
-/*------------------------------------------------------------------------------------------------------------------*/
-
-.upload-button {
-  padding: 8px 16px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.upload-button:hover {
-  background-color: #0056b3;
-}
-
 span {
   display: block;
   color: red;
 }
 
-/*-----------------------------------------------------------------------------------------------------------------*/
+
 
 /* 모달 스타일 */
 .modal {
@@ -461,6 +571,109 @@ span {
   top: 15px;
   right: 15px;
   color: #fff;
+}
+
+
+
+
+/* 모바일 화면용 스타일 */
+.mobile-form {
+  /* 모바일에 맞게 스타일 조정 */
+  .createPost {
+    padding: 20px;
+  }
+
+  .form-container {
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .subBtn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .subBtn:hover {
+    background-color: #0056b3;
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal.is-active {
+    display: flex;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+  }
+
+  .modal-close {
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #fff;
+  }
+
+  span {
+    color: red;
+    font-size: 0.8em;
+  }
+
+}
+
+/* 미디어 쿼리 */
+@media (min-width: 768px) {
+  .mobile-form {
+    display: none; /* 모바일 화면에서는 숨김 */
+  }
+}
+
+@media (max-width: 767px) {
+  .pc-form {
+    display: none; /* PC 화면에서는 숨김 */
+  }
 }
 
 </style>

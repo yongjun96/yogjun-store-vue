@@ -92,6 +92,8 @@ export default {
     <h1>회원가입 페이지 입니다.</h1>
   </div>
 
+  <!-- PC 화면 -->
+  <div class="pc">
   <table>
     <tr>
       <th><label for="email">이메일</label></th>
@@ -117,10 +119,39 @@ export default {
       </td>
     </tr>
 
-
     <!-- 추가 필드들을 여기에 추가할 수 있습니다 -->
   </table>
   <button class="subBtn" @click="findMember">회원가입</button>
+
+  </div>
+
+
+
+  <!-- 모바일 화면 -->
+  <div class="mobile">
+
+  <div class="form-container">
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="text" v-model="signUpDto.email" id="email" name="email" placeholder="회원가입하면 같은 email로 sns계정 가입을 할 수 없습니다!!">
+        <span class="valid">{{emailValid}}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" v-model="signUpDto.password" id="password" name="password" placeholder="최소 8자 이상, 하나 이상의 소문자, 숫자, 특수문자를 포함해야 합니다.">
+        <span class="valid">{{passwordValid}}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" v-model="signUpDto.name" id="name" name="name" placeholder="ex). 홍길동">
+        <span class="valid">{{nameValid}}</span>
+      </div>
+
+      <button class="subBtn" @click="findMember">회원가입</button>
+  </div>
+  </div>
 
 </template>
 
@@ -262,7 +293,60 @@ input[type="password"] {
   color: #fff;
 }
 
+/* 미디어 쿼리 */
+@media (min-width: 768px) {
+  .mobile {
+    display: none; /* 모바일 화면에서는 숨김 */
+  }
+}
+
+
+/* 모바일에 대응하는 스타일 */
+@media screen and (max-width: 768px) {
+  .form-container {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .valid {
+    display: block;
+    color: red;
+    font-size: 12px;
+  }
+
+  .subBtn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  /* PC 화면 숨기기 */
+  .pc {
+    display: none;
+  }
+}
 
 </style>
-<script setup>
-</script>

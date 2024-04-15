@@ -8,19 +8,12 @@ export default{
 
 <template>
   <footer>
-    <p>푸터입니다.</p>
+    <p>방장 ver - 0.1</p>
   </footer>
 </template>
 
 
 
 <style>
-
-footer{
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 10%;
-}
 
 </style>

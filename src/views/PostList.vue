@@ -10,6 +10,7 @@ export default {
 
   data() {
     return {
+      isMobile: false, // 모바일 화면 여부
       searchContent: '',
       searchOption: 'title',
       pageSize: '4',
@@ -65,15 +66,24 @@ export default {
   },
 
   mounted() {
+
+    this.detectMobile();
+    window.addEventListener("resize", this.detectMobile); // 창 크기가 변경될 때마다 호출
+
     const savedPage = localStorage.getItem('RoomPostListPage');
     if (savedPage) {
       this.currentPage = parseInt(savedPage);
       localStorage.removeItem('RoomPostListPage'); // 페이지 번호를 가져온 후 로컬 스토리지에서 제거
     }
     this.getRoomPostList();
+
   },
 
   methods: {
+
+    detectMobile() {
+      this.isMobile = window.innerWidth <= 768; // 768px 이하일 때 모바일로 판단
+    },
 
     getRoomPostList() {
       axios.get(import.meta.env.VITE_APP_API_URL + '/roomPost/posts', {
@@ -81,7 +91,7 @@ export default {
           searchContent: this.searchContent,
           searchOption: this.searchOption,
           page: this.currentPage, // 현재 페이지 번호
-          size: this.pageSize // 총 페이지 수
+          size: this.pageSize // 한 페이지에 표시될 글 갯수
 
         },
         headers: {
@@ -98,7 +108,6 @@ export default {
             // 총 카운트
             this.totalPages = response.data.totalPages;
             console.log("총 카운트 : " + response.data.totalPages);
-
 
             this.roomPost = content.map(item => ({
               id: item.id,
@@ -170,8 +179,8 @@ export default {
       <div v-for="item in roomPost" :key="item.id" class="post-item">
         <div class="thumbnail">
           <img :src="item.urlPath" alt="썸네일 이미지" @click="movePostInfo(item.id)">
-
         </div>
+
         <div class="post-info">
           <h3 class="post-title">{{ item.title }}</h3>
           <p class="post-content">
@@ -186,8 +195,21 @@ export default {
     </div>
   </div>
 
+  <div class="mobile-search-container" v-if="isMobile">
+    <div class="select-box">
+      <select name="deposit" id="deposit" v-model="this.searchOption">
+        <option value="title">제목</option>
+        <option value="titleContent">제목 + 내용</option>
+        <option value="email">작성자 이메일</option>
+        <option value="address">주소</option>
+      </select>
+    </div>
+    <input type="text" placeholder="검색어를 입력하세요..." v-model="this.searchContent" @keyup.enter="getRoomPostList">
+    <button type="submit" @click="getRoomPostList">검색</button>
+  </div>
 
-  <span class="search-container">
+
+  <span v-else class="search-container" >
 
       <div class="select-box">
     <select name="deposit" id="deposit" v-model="this.searchOption">
@@ -220,14 +242,18 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 20px;
-  width: 80%; /* 컨텐츠 영역의 너비를 80%로 설정 */
+  width: 60%; /* 컨텐츠 영역의 너비를 80%로 설정 */
   margin: 0 auto; /* 가운데 정렬을 위해 좌우 여백을 자동으로 조정 */
+
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
 }
 .post-item {
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: hidden;
   transition: transform 0.3s ease;
+
 }
 .post-item:hover {
   transform: translateY(-5px);
@@ -252,17 +278,8 @@ export default {
 .post-content {
   color: #666;
 }
-.post-link {
-  color: #007bff;
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 10px;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-.post-link:hover {
-  color: #0056b3;
-}
+
+
 
 
 
@@ -297,6 +314,11 @@ export default {
   background-color: #0056b3; /* 호버 시 배경색 변경 */
 }
 
+span.search-container {
+  color: #2c3e50;
+}
+
+
 
 .select-box {
   width: calc(100% - 77%); /* 입력 필드 너비 조절 */
@@ -323,4 +345,41 @@ export default {
   right: 10px;
   transform: translateY(-50%);
 }
+
+/* 모바일 화면에 대응하는 스타일 */
+.mobile-search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mobile-search-container .select-box {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.mobile-search-container input[type="text"] {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.mobile-search-container button {
+  width: 100%;
+}
+
+.mobile-search-container button {
+  padding: 7px 15px;
+  background-color: #007bff; /* 배경색 */
+  color: white; /* 글자색 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none; /* 포커스 시 테두리 제거 */
+}
+
+/* 버튼에 마우스를 올렸을 때 스타일 변경 */
+.mobile-search-container button:hover {
+  background-color: #0056b3; /* 호버 시 배경색 변경 */
+}
+
 </style>

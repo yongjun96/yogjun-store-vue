@@ -1,7 +1,7 @@
 <template>
   <header>
     <!-- 헤더 내용 -->
-    <h1 id="headerTitle">헤더</h1>
+    <h1 id="headerTitle">방장</h1>
     <nav>
       <router-link to="/">메인</router-link>
       <router-link to="/createPost">글작성</router-link>
