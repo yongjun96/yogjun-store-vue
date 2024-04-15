@@ -18,6 +18,7 @@ export default {
   mounted() {
   },
 
+
   methods: {
 
     memberLogin() {
@@ -61,7 +62,8 @@ export default {
 
     getGoogleAuthUrl() {
       return `${import.meta.env.VITE_APP_API_URL}/oauth2/authorization/google`;
-    }
+    },
+
 
   }
 }
@@ -185,7 +187,7 @@ export default {
   vertical-align: middle;
   padding-bottom: 20px;
   width: 20px;
-  background-image: url('./src/assets/googleLogo.png');
+  background-image: url('/googleLogo.png');
   background-size: cover;
 }
 
