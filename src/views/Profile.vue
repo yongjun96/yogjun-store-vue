@@ -138,7 +138,7 @@ export default {
 
       this.isLoading = true; // 로딩 중 상태로 설정
 
-      axios.post(import.meta.env.VITE_APP_API_URL + '/mailSend',
+      axios.post(import.meta.env.VITE_APP_API_URL + '/mail/mailSend',
           {
             email: this.sendEmail.email // 이메일 주소만 보내도록 수정
             },
@@ -177,7 +177,7 @@ export default {
     },
 
     authCheck() {
-      axios.post(import.meta.env.VITE_APP_API_URL + '/authCheck',
+      axios.post(import.meta.env.VITE_APP_API_URL + '/mail/authNumCheck',
           {
             authNumber: this.authCheckRequest.authNumber,
             email: this.authCheckRequest.email
