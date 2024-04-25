@@ -346,40 +346,55 @@ span.search-container {
   transform: translateY(-50%);
 }
 
-/* 모바일 화면에 대응하는 스타일 */
-.mobile-search-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.mobile-search-container .select-box {
-  width: 100%;
-  margin-bottom: 10px;
-}
 
-.mobile-search-container input[type="text"] {
-  width: 100%;
-  margin-bottom: 10px;
-}
+/* 추가 미디어 쿼리 */
+@media (max-width: 375px) {
+  /* 아이폰 미니 12 크기에서 화면 조정 */
 
-.mobile-search-container button {
-  width: 100%;
-}
+  /* 게시물 목록 조정 */
+  .post-list-items {
+    grid-template-columns: 1fr; /* 한 줄에 하나의 아이템 */
+  }
 
-.mobile-search-container button {
-  padding: 7px 15px;
-  background-color: #007bff; /* 배경색 */
-  color: white; /* 글자색 */
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none; /* 포커스 시 테두리 제거 */
-}
+  /* 썸네일 조정 */
+  .thumbnail {
+    height: 150px; /* 썸네일 높이 조정 */
+  }
 
-/* 버튼에 마우스를 올렸을 때 스타일 변경 */
-.mobile-search-container button:hover {
-  background-color: #0056b3; /* 호버 시 배경색 변경 */
+  /* 검색 컨테이너 조정 */
+  .search-container {
+    flex-direction: column; /* 세로로 나열 */
+    width: 100%; /* 전체 너비 */
+  }
+
+  .search-container input[type="text"],
+  .search-container button {
+    width: 100%; /* 전체 너비 */
+    margin-bottom: 10px; /* 입력 필드와 버튼 사이 간격 */
+  }
+
+  /* 모바일 검색 컨테이너 조정 */
+  .mobile-search-container .select-box,
+  .mobile-search-container input[type="text"],
+  .mobile-search-container button {
+    width: 100%; /* 전체 너비 */
+    margin-bottom: 10px; /* 요소 사이 간격 */
+  }
+
+  /* 모바일 검색 컨테이너 */
+  .mobile-search-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* 전체 너비 */
+    align-items: stretch; /* 요소를 너비에 맞게 늘림 */
+  }
+
+  /* pagination 요소 조정 */
+  .pagination {
+    margin-top: 10px; /* 위 간격 */
+    text-align: center; /* 중앙 정렬 */
+  }
 }
 
 </style>

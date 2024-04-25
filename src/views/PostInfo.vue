@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import VueJwtDecode from "vue-jwt-decode";
 
 export default {
 
@@ -32,12 +33,34 @@ export default {
           urlPath: ''
         },
       },
-      currentIndex: 0
+      delRoomPost: {
+        roomPostId: '',
+        memberId: ''
+      },
+      currentIndex: 0,
+      token: '',
+      tokenEmail: ''
+    }
+  },
+
+  computed: {
+    loginEmailCheck(){
+      return this.tokenEmail == this.roomPost.member.email;
     }
   },
 
 
   mounted() {
+
+    // 로컬 스토리지에서 accessToken을 가져와서 email 체크
+    const token = localStorage.getItem('accessToken');
+    this.token = token;
+
+    console.log(token);
+    const decodedToken = VueJwtDecode.decode(token);
+
+    this.tokenEmail = decodedToken.sub;
+
     this.roomPost.id = this.$route.query.id;
     console.log("해당 글 번호 : "+this.roomPost.id); // 해당 글 번호
 
@@ -90,6 +113,31 @@ export default {
           })
     },
 
+    deleteRoomPost(){
+
+      this.delRoomPost.roomPostId = this.roomPost.id;
+      this.delRoomPost.memberId = this.roomPost.member.id;
+
+      console.log("확인 : "+this.delRoomPost.roomPostId);
+      console.log("확인 : "+this.delRoomPost.memberId);
+
+        axios.patch(import.meta.env.VITE_APP_API_URL + '/room-post/soft-delete', this.delRoomPost, {
+          headers: {
+            'Content-Type': 'application/json', // 요청의 Content-Type 설정
+            'Authorization': `Bearer ${this.token}` // 토큰을 포함한 헤더 설정
+          }
+        })
+            .then(response => {
+              console.log(response.data);
+              //const content = response.data;
+
+            })
+            .catch(error => {
+
+              console.error('Error fetching data:', error);
+            })
+    },
+
     nextSlide() {
       if (this.currentIndex < this.roomPost.imagesList.length - 1) {
         this.currentIndex++;
@@ -112,6 +160,7 @@ export default {
         return price + "만원";
       }
     },
+
   }
 }
 
@@ -152,6 +201,7 @@ export default {
       <h3>{{"작성자 : "+ roomPost.roomOwner }}</h3>
       <h3>{{"작성자 이메일 : "+ roomPost.member.email }}</h3>
     </div>
+    <button v-if="loginEmailCheck" @click="deleteRoomPost" class="deleteBtn">글 삭제</button>
   </div>
 
 </template>
@@ -220,5 +270,15 @@ export default {
 
 .room-info strong {
   margin-right: 10px;
+}
+
+.deleteBtn{
+  margin: 0 10px;
+  padding: 5px 10px;
+  background-color: #c92323;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>
