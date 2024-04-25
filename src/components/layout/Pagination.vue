@@ -35,7 +35,7 @@ export default {
     goToPage(page) {
       this.$emit('page-change', page);
 
-      this.$router.push({ path: '/postList', query: { page: page + 1 } });
+      this.$router.push({ path: '/post-list', query: { page: page + 1 } });
     },
     prevPage() {
       if (this.currentPage > 0) {
@@ -43,7 +43,7 @@ export default {
 
         const page = this.currentPage - 1;
 
-        this.$router.push({ path: '/postList', query: { page: page + 1} });
+        this.$router.push({ path: '/post-list', query: { page: page + 1} });
       }
     },
     nextPage() {
@@ -52,7 +52,7 @@ export default {
 
         const page = this.currentPage + 1;
 
-        this.$router.push({ path: '/postList', query: { page: page + 1} });
+        this.$router.push({ path: '/post-list', query: { page: page + 1} });
       }
     },
 

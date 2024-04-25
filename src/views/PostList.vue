@@ -86,7 +86,7 @@ export default {
     },
 
     getRoomPostList() {
-      axios.get(import.meta.env.VITE_APP_API_URL + '/roomPost/posts', {
+      axios.get(import.meta.env.VITE_APP_API_URL + '/room-post/posts', {
         params: {
           searchContent: this.searchContent,
           searchOption: this.searchOption,
@@ -163,7 +163,7 @@ export default {
 
     movePostInfo(id) {
       this.$router.push({
-        path: '/postInfo',
+        path: '/post-info',
         query: {id: id,} // 전달할 데이터를 객체로 넘깁니다.
       });
     },

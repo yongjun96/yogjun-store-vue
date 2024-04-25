@@ -100,7 +100,7 @@ export default {
 
   methods: {
     findMyProfile() {
-      axios.get(import.meta.env.VITE_APP_API_URL + '/member/find/myProfile/' + this.email,
+      axios.get(import.meta.env.VITE_APP_API_URL + '/member/find/my-profile/' + this.email,
           {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // 토큰을 포함한 헤더 설정
@@ -138,7 +138,7 @@ export default {
 
       this.isLoading = true; // 로딩 중 상태로 설정
 
-      axios.post(import.meta.env.VITE_APP_API_URL + '/mail/mailSend',
+      axios.post(import.meta.env.VITE_APP_API_URL + '/mail/mail-send',
           {
             email: this.sendEmail.email // 이메일 주소만 보내도록 수정
             },
@@ -177,7 +177,7 @@ export default {
     },
 
     authCheck() {
-      axios.post(import.meta.env.VITE_APP_API_URL + '/mail/authNumCheck',
+      axios.post(import.meta.env.VITE_APP_API_URL + '/mail/auth-num-check',
           {
             authNumber: this.authCheckRequest.authNumber,
             email: this.authCheckRequest.email
@@ -208,7 +208,7 @@ export default {
     },
 
     passwordEdit() {
-      axios.patch(import.meta.env.VITE_APP_API_URL + '/member/passwordEdit',
+      axios.patch(import.meta.env.VITE_APP_API_URL + '/member/password-edit',
           {
             email: this.passwordEditRequest.email,
             password: this.passwordEditRequest.password,
@@ -264,7 +264,7 @@ export default {
     },
 
     getRoomPostList() {
-      axios.get(import.meta.env.VITE_APP_API_URL + '/roomPost/posts', {
+      axios.get(import.meta.env.VITE_APP_API_URL + '/room-post/posts', {
         params: {
           searchContent: this.email,
           searchOption: this.searchOption,
@@ -307,7 +307,7 @@ export default {
 
     movePostInfo(id) {
       this.$router.push({
-        path: '/postInfo',
+        path: '/post-info',
         query: {id: id,} // 전달할 데이터를 객체로 넘깁니다.
       });
     },

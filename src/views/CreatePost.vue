@@ -129,7 +129,7 @@ export default {
       }
 
 
-      axios.post(import.meta.env.VITE_APP_API_URL + '/roomPost/createS3', formData, {
+      axios.post(import.meta.env.VITE_APP_API_URL + '/room-post/create-s3', formData, {
         headers: {
           'Authorization': `Bearer ${this.token}`,
           'Content-Type': 'multipart/form-data',
@@ -138,7 +138,7 @@ export default {
           .then(() => {
             console.log("방 글 작성 완료");
 
-              this.$router.push('/postList');
+              this.$router.push('/post-list');
 
           })
 

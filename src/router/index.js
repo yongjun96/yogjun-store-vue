@@ -17,7 +17,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/postList',
+      path: '/post-list',
       name: 'PostList',
       component: PostList
     },
@@ -29,7 +29,7 @@ const router = createRouter({
     },
 
     {
-      path: '/postInfo',
+      path: '/post-info',
       name: 'PostInfo',
       component: PostInfo
     },
@@ -41,7 +41,7 @@ const router = createRouter({
     },
 
     {
-      path: '/createPost',
+      path: '/create-post',
       name: 'CreatePost',
       component: CreatePost, meta: { requiresAuth: true } // 예시 로그인이 필요한 페이지 설정
     },
