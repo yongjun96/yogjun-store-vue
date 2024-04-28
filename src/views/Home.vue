@@ -8,9 +8,9 @@ export default {
       errorMessage: '', // 에러 메시지
 
       images: [
-        '../../public/mainimages/main1.jpg',
-        '../../public/mainimages/main2.png',
-        '../../public/mainimages/main3.jpg',
+        '../../public/main_images/main1.jpg',
+        '../../public/main_images/main2.png',
+        '../../public/main_images/main3.jpg',
       ],
       currentIndex: 0,
       intervalId: null,
