@@ -5,7 +5,17 @@ export default {
   data() {
     return{
       showModal: false,
-      errorMessage: '' // 에러 메시지
+      errorMessage: '', // 에러 메시지
+
+      images: [
+        '../../public/mainimages/main1.jpg',
+        '../../public/mainimages/main2.png',
+        '../../public/mainimages/main3.jpg',
+      ],
+      currentIndex: 0,
+      intervalId: null,
+      slideInterval: 5000, // 3초 간격
+
     }
   },
 
@@ -41,6 +51,12 @@ export default {
 
       this.openModal();
     }
+
+    this.startAutoSlide();
+  },
+
+  beforeUnmount() {
+    this.stopAutoSlide();
   },
 
   methods: {
@@ -49,6 +65,19 @@ export default {
     },
     closeModal() {
       this.showModal = false; // 모달 닫기
+    },
+
+    prevSlide() {
+      this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+    },
+    nextSlide() {
+      this.currentIndex = (this.currentIndex + 1) % this.images.length;
+    },
+    startAutoSlide() {
+      this.intervalId = setInterval(this.nextSlide, this.slideInterval);
+    },
+    stopAutoSlide() {
+      clearInterval(this.intervalId);
     }
   }
 }
@@ -71,7 +100,17 @@ export default {
   </div>
   <!-- 모달 끝 -->
 
-  <h1>메인 입니다.</h1>
+
+  <p class="welcome-text">방장에 오신걸 환영합니다.</p>
+  <br>
+
+  <div class="carousel-container">
+    <div class="carousel">
+      <div class="slide" :style="{ backgroundImage: 'url(' + images[currentIndex] + ')' }"></div>
+      <button class="prev-button" @click="prevSlide">Left</button>
+      <button class="next-button" @click="nextSlide">Right</button>
+    </div>
+  </div>
 
 
 
@@ -79,6 +118,21 @@ export default {
 </template>
 
 <style scoped>
+
+.welcome-text {
+  font-family: 'Arial', sans-serif; /* 글꼴 설정 */
+  font-size: 24px; /* 글자 크기 */
+  color: #000000; /* 글자 색상 */
+  padding: 10px 20px; /* 패딩 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  transition: transform 0.3s ease-in-out; /* 트랜지션 효과 */
+}
+
+.welcome-text:hover {
+  transform: scale(1.1); /* 마우스 호버 시 확대 */
+}
+
+
 /* 모달 스타일 */
 .modal {
   display: none;
@@ -112,12 +166,52 @@ export default {
   right: 15px;
   color: #fff;
 }
-.title {
-  color: #3273dc; /* 제목 색상 */
-}
-.subtitle {
-  color: #4a4a4a; /* 부제목 색상 */
+
+
+
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-/*------------------------------------------------------------------------------------------------------------------*/
+.carousel {
+  position: relative;
+  width: 1000px;
+  height: 600px;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.prev-button, .next-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.prev-button {
+  left: 10px;
+}
+
+.next-button {
+  right: 10px;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out; /* 슬라이드 이동 효과 */
+}
+
 </style>

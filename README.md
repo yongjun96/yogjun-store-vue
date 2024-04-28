@@ -47,33 +47,27 @@
 <br>
 <br>
 
-<img src="https://img.shields.io/badge/프로젝트 구성-dimgray" style="width: 110px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/프로젝트 구성-dimgray" style="width: 110px; height: auto;">
 
 <br>
 <br>
 
-<img src="https://img.shields.io/badge/프레임워크-dimgray" style="width: 90px; height: auto; pointer-events: none;"> 
-<img src="https://img.shields.io/badge/Vue.js-seagreen?logo=vuedotjs&logoColor=white" style="width: 90px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/프레임워크-dimgray" style="width: 90px; height: auto;"> <img src="https://img.shields.io/badge/Vue.js-seagreen?logo=vuedotjs&logoColor=white" style="width: 90px; height: auto;">
 <br>
 
-<img src="https://img.shields.io/badge/아키텍처-dimgray" style="width: 80px; height: auto; pointer-events: none;"> 
-<img src="https://img.shields.io/badge/MVVM-darkturquoise" style="width: 65px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/아키텍처-dimgray" style="width: 80px; height: auto;"> <img src="https://img.shields.io/badge/MVVM-darkturquoise" style="width: 65px; height: auto;">
 <br>
 
-<img src="https://img.shields.io/badge/언어-dimgray" style="width: 48px; height: auto; pointer-events: none;">
-<img src="https://img.shields.io/badge/JavaScript-khaki?logo=javascript&logoColor=white" style="width: 130px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/언어-dimgray" style="width: 48px; height: auto;"> <img src="https://img.shields.io/badge/JavaScript-khaki?logo=javascript&logoColor=white" style="width: 130px; height: auto;">
 <br>
 
-<img src="https://img.shields.io/badge/빌드-dimgray" style="width: 45px; height: auto; pointer-events: none;">
-<img src="https://img.shields.io/badge/Vite-deepskyblue?logo=Vite&logoColor=white" style="width: 72px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/빌드-dimgray" style="width: 45px; height: auto;"> <img src="https://img.shields.io/badge/Vite-deepskyblue?logo=Vite&logoColor=white" style="width: 72px; height: auto;">
 <br>
 
-<img src="https://img.shields.io/badge/개발 서버-dimgray" style="width: 75px; height: auto; pointer-events: none;">
-<img src="https://img.shields.io/badge/node.js-seagreen?logo=node.js&logoColor=white" style="width: 89px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/개발 서버-dimgray" style="width: 75px; height: auto;"> <img src="https://img.shields.io/badge/node.js-seagreen?logo=node.js&logoColor=white" style="width: 89px; height: auto;">
 <br>
 
-<img src="https://img.shields.io/badge/CI/CD-dimgray" style="width: 60px; height: auto; pointer-events: none;">
-<img src="https://img.shields.io/badge/Github Actions-black?logo=Github Actions&logoColor=white" style="width: 155px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/CI/CD-dimgray" style="width: 60px; height: auto;"> <img src="https://img.shields.io/badge/Github Actions-black?logo=Github Actions&logoColor=white" style="width: 155px; height: auto;">
 <br>
 
 <br>
@@ -84,21 +78,18 @@
 <br>
 
 
-<img src="https://img.shields.io/badge/aws-orange" style="width: 50px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/aws-orange" style="width: 50px; height: auto;">
 
 <br>
 <br>
 
-<img src="https://img.shields.io/badge/저장소-dimgray" style="width: 60px; height: auto; pointer-events: none;">
-<img src="https://img.shields.io/badge/S3-seagreen?logo=amazons3&logoColor=white" style="width: 60px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/저장소-dimgray" style="width: 60px; height: auto;"> <img src="https://img.shields.io/badge/S3-seagreen?logo=amazons3&logoColor=white" style="width: 60px; height: auto;">
 <br>
 
-<img src="https://img.shields.io/badge/DNS-dimgray" style="width: 50px; height: auto; pointer-events: none;">
-<img src="https://img.shields.io/badge/Route53-slateblue?logo=amazonroute53&logoColor=white" style="width: 110px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/DNS-dimgray" style="width: 50px; height: auto;"> <img src="https://img.shields.io/badge/Route53-slateblue?logo=amazonroute53&logoColor=white" style="width: 110px; height: auto;">
 <br>
 
-<img src="https://img.shields.io/badge/CND-dimgray" style="width: 50px; height: auto; pointer-events: none;">
-<img src="https://img.shields.io/badge/CloudFront-mediumslateblue" style="width: 100px; height: auto; pointer-events: none;">
+<img src="https://img.shields.io/badge/CND-dimgray" style="width: 50px; height: auto;"> <img src="https://img.shields.io/badge/CloudFront-mediumslateblue" style="width: 100px; height: auto;">
 <br>
 
 
