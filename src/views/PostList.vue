@@ -211,7 +211,7 @@ export default {
 
   <span v-else class="search-container" >
 
-      <div class="select-box">
+  <div class="select-box">
     <select name="deposit" id="deposit" v-model="this.searchOption">
       <option value="title">제목</option>
       <option value="titleContent">제목 + 내용</option>
@@ -242,7 +242,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 20px;
-  width: 60%; /* 컨텐츠 영역의 너비를 80%로 설정 */
+  width: 60%; /* 컨텐츠 영역의 너비를 60%로 설정 */
   margin: 0 auto; /* 가운데 정렬을 위해 좌우 여백을 자동으로 조정 */
 
   justify-content: center; /* 수평 가운데 정렬 */
@@ -349,17 +349,23 @@ span.search-container {
 
 
 /* 추가 미디어 쿼리 */
-@media (max-width: 375px) {
-  /* 아이폰 미니 12 크기에서 화면 조정 */
+@media (max-width: 767px) {
 
   /* 게시물 목록 조정 */
   .post-list-items {
-    grid-template-columns: 1fr; /* 한 줄에 하나의 아이템 */
+    display: grid;
+    //grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 80%; /* 컨텐츠 영역의 너비를 80%로 설정 */
+    margin: 0 auto; /* 가운데 정렬을 위해 좌우 여백을 자동으로 조정 */
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
   }
 
   /* 썸네일 조정 */
   .thumbnail {
-    height: 150px; /* 썸네일 높이 조정 */
+    height: auto; /* 썸네일 높이 조정 */
   }
 
   /* 검색 컨테이너 조정 */
@@ -390,11 +396,8 @@ span.search-container {
     align-items: stretch; /* 요소를 너비에 맞게 늘림 */
   }
 
-  /* pagination 요소 조정 */
-  .pagination {
-    margin-top: 10px; /* 위 간격 */
-    text-align: center; /* 중앙 정렬 */
-  }
+
+
 }
 
 </style>

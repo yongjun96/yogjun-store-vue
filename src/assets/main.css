@@ -14,27 +14,14 @@ header {
 }
 
 
-/* 미디어 쿼리를 사용하여 화면 크기에 따라 헤더 스타일 변경 */
-@media screen and (max-width: 768px) {
-    header {
-        height: 120px;
-        overflow-y: auto; /* 헤더가 최대 높이를 초과하면 스크롤 표시 */
-    }
 
-    nav {
-        flex-direction: column;
-    }
-}
+
 
 
 body {
-    margin: 0;
-    padding: 0;
     font-family: Arial, sans-sserif;
     background-color: #f9f9f9; /* 배경색 설정 */
-    display: grid;
     grid-template-rows: auto 1fr auto; /* 헤더, 컨텐츠, 푸터 순으로 자동 크기, 남은 공간, 자동 크기 */
-    min-height: 100vh;
     overflow: hidden; /* 전체 화면에 스크롤이 생기지 않도록 설정 */
     height: 100%; /* 부모 요소의 높이를 설정합니다. */
 }
@@ -99,16 +86,14 @@ nav a:hover {
 .content {
     text-align: center;
     width: 100%; /* 컨텐츠의 너비를 100%로 설정 */
-    /*height: 100%;*/
     flex-grow: 1; /* 빈 공간을 채우도록 설정 */
     border-radius: 5px; /* 보더의 모서리를 둥글게 만듦 */
     background-color: #f9f9f9; /* 배경색 지정 */
     padding: 20px; /* 내부 여백 */
     margin: 0 auto; /* 가운데 정렬 */
-    flex-grow: 1; /* 빈 공간을 채우도록 설정 */
     overflow-y: auto; /* 세로 스크롤이 필요할 때만 스크롤이 나타나도록 설정 */
-
     max-height: calc(100vh - 170px); /* 화면 전체 높이에서 헤더와 푸터의 높이를 뺀 값으로 설정 */
+    overflow-x: hidden; /* 가로 스크롤 숨기기 */
 }
 
 /*--------------------------------------------------------------------------------------------------------------*/

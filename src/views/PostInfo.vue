@@ -173,17 +173,15 @@ export default {
     <div class="room-header">
       <h1>{{ roomPost.title }}</h1>
     </div>
-    <div class="image-slider">
-      <div class="slide">
-        <img :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name">
+    <div class="info-image-slider">
+      <div class="info-slide">
+       <img class="image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name">
+        <button class="prev-button" @click="prevSlide" :disabled="currentIndex === 0">Left</button>
+        <button class="next-button" @click="nextSlide" :disabled="currentIndex === roomPost.imagesList.length - 1">Right</button>
       </div>
     </div>
-    <div class="navigation">
-      <button @click="prevSlide" :disabled="currentIndex === 0">Previous</button>
-      <button @click="nextSlide" :disabled="currentIndex === roomPost.imagesList.length - 1">Next</button>
-    </div>
+
     <div class="room-info">
-      <h1>Room Information</h1>
       <h2>{{ roomPost.roomName }}</h2>
       <h3>{{"주소 : "+ roomPost.address }}</h3>
       <br>
@@ -207,6 +205,37 @@ export default {
 </template>
 
 <style>
+
+/* 버튼을 이미지 안으로 배치하고 스타일 조정 */
+.prev-button, .next-button {
+  position: absolute; /* 버튼의 위치를 이미지 안으로 고정 */
+  top: 50%; /* 이미지의 중간 높이로 위치 조정 */
+  transform: translateY(-50%); /* 수직 중심으로 조정 */
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5); /* 배경 색상 */
+  color: white; /* 글자 색상 */
+  border: none; /* 테두리 없음 */
+  border-radius: 50%; /* 둥근 모양으로 설정 */
+  cursor: pointer;
+  z-index: 1; /* z-index를 1로 설정하여 이미지 위에 배치 */
+}
+
+.prev-button {
+  left: 10px; /* 왼쪽에서 10px 위치 조정 */
+}
+
+.next-button {
+  right: 10px; /* 오른쪽에서 10px 위치 조정 */
+}
+
+/* 비활성화된 버튼 스타일 조정 */
+.prev-button:disabled, .next-button:disabled {
+  background-color: rgba(128, 128, 128, 0.5); /* 비활성화된 상태의 배경 색상 */
+  color: rgba(255, 255, 255, 0.5); /* 비활성화된 상태의 글자 색상 */
+  cursor: not-allowed; /* 마우스 커서를 비활성화된 상태로 설정 */
+}
+
+
 .room-detail {
   max-width: 100%;
   margin: 0 auto;
@@ -218,23 +247,24 @@ export default {
   margin-bottom: 20px;
 }
 
-.image-slider {
+.info-image-slider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.info-slide {
   position: relative;
+  width: 800px;
+  height: 600px;
+  height: auto;
   overflow: hidden;
 }
 
-.slide {
-  text-align: center;
-}
-
-.slide img {
-  max-width: 100%;
+.info-slide img {
+  width: 800px;
   height: 600px;
-}
-
-.navigation {
-  margin-top: 10px;
-  text-align: center;
 }
 
 
@@ -280,5 +310,24 @@ export default {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* 모바일 화면 대응 */
+@media (max-width: 768px) {
+
+  .info-slide {
+    max-width: 600px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+  }
+
+  .info-slide img {
+    max-width: 600px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+  }
+
 }
 </style>

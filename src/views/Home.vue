@@ -8,9 +8,9 @@ export default {
       errorMessage: '', // 에러 메시지
 
       images: [
-        `/public/main_images/main1.jpg`,
-        `/public/main_images/main2.png`,
-        `/public/main_images/main3.jpg`,
+        '../../public/main_images/main1.jpg',
+        '../../public/main_images/main2.png',
+        '../../public/main_images/main3.jpg',
       ],
       currentIndex: 0,
       intervalId: null,
@@ -106,7 +106,7 @@ export default {
 
   <div class="carousel-container">
     <div class="carousel">
-      <div class="slide" :style="{ backgroundImage: 'url(' + images[currentIndex] + ')' }"></div>
+      <img class="slide" :src="images[currentIndex]" :alt="images[currentIndex]">
       <button class="prev-button" @click="prevSlide">Left</button>
       <button class="next-button" @click="nextSlide">Right</button>
     </div>
@@ -209,9 +209,24 @@ export default {
   right: 10px;
 }
 
-.slides {
-  display: flex;
-  transition: transform 0.5s ease-in-out; /* 슬라이드 이동 효과 */
+/* 모바일 화면 대응 */
+@media (max-width: 768px) {
+  .carousel {
+    width: 100%; /* 모바일 화면에서는 슬라이드 너비를 100%로 */
+    height: 300px; /* 모바일 화면에서는 슬라이드 높이를 줄임 */
+  }
+
+
+  /* 모달의 너비를 모바일에 맞게 조정 */
+  .modal-content {
+    max-width: 90%; /* 모바일 화면에서는 모달의 너비를 줄임 */
+  }
+
+  /* 웰컴 텍스트의 크기 및 패딩 조정 */
+  .welcome-text {
+    font-size: 16px; /* 모바일 화면에서는 글자 크기를 줄임 */
+    padding: 5px 10px; /* 모바일 화면에서는 패딩을 줄임 */
+  }
 }
 
 </style>
