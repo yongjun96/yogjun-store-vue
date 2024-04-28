@@ -8,7 +8,7 @@ export default {
       errorMessage: '', // 에러 메시지
 
       images: [
-        '../../public/main_images/main1.jpg',
+        `${import.meta.env.VITE_APP_FRONT_URL}/public/main_images/main1.jpg`,
         '../../public/main_images/main2.png',
         '../../public/main_images/main3.jpg',
       ],

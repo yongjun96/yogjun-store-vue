@@ -322,8 +322,14 @@ export default {
 
       if(providerId !== null){
         return this.member.provider;
-      }else{
-        return "일반회원";
+      }
+      else{
+        if(this.member.role == 'ADMIN'){
+          return "관리자";
+        }
+        else {
+          return "일반회원";
+        }
       }
     },
 
