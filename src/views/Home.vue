@@ -8,9 +8,9 @@ export default {
       errorMessage: '', // 에러 메시지
 
       images: [
-        '../../public/images/main1.jpg',
-        '../../public/images/main2.png',
-        '../../public/images/main3.jpg'
+        'main1.jpg',
+        'main2.png',
+        'main3.jpg'
       ],
       currentIndex: 0,
       intervalId: null,
@@ -106,7 +106,7 @@ export default {
 
   <div class="carousel-container">
     <div class="carousel">
-      <img class="slide" :src="images[currentIndex]">
+      <img class="slide" :src="'./public/images/'+this.images[currentIndex]">
       <button class="prev-button" @click="prevSlide">Left</button>
       <button class="next-button" @click="nextSlide">Right</button>
     </div>
