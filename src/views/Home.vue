@@ -14,7 +14,7 @@ export default {
       ],
       currentIndex: 0,
       intervalId: null,
-      slideInterval: 5000, // 5초 간격
+      slideInterval: 10000, // 10초 간격
 
     }
   },
@@ -106,7 +106,7 @@ export default {
 
   <div class="carousel-container">
     <div class="carousel">
-      <img class="slide" :src="'./public/images/'+this.images[currentIndex]">
+      <img class="slide" :src="'/images/'+this.images[currentIndex]">
       <button class="prev-button" @click="prevSlide">Left</button>
       <button class="next-button" @click="nextSlide">Right</button>
     </div>

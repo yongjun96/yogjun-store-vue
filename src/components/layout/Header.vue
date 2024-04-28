@@ -143,7 +143,7 @@ nav a:hover {
     position: absolute;
     top: 60px;
     right: 10px;
-    z-index: 1000;
+    z-index: 9999;
     border-radius: 5px;
   }
 

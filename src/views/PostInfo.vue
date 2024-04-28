@@ -296,6 +296,12 @@ export default {
   z-index: 999;
 }
 
+.lightbox-background {
+  position: fixed;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
 /* Lightbox 컨텐츠 */
 .lightbox-content {
   position: relative;
@@ -409,7 +415,7 @@ export default {
 
 .room-info {
   margin-top: 20px;
-  border-top: 2px solid #007bff;
+
   padding-top: 20px;
 }
 
