@@ -153,5 +153,11 @@ nav a:hover {
   nav a:hover {
     background-color: #444;
   }
+
+  header {
+    padding: 10px; /* 내부 여백 */
+    height: 50px;
+  }
+
 }
 </style>

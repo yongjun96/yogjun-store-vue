@@ -6,6 +6,7 @@ export default {
 
   data() {
     return {
+      showModal: false, // 모달의 가시성 상태
       url: `${import.meta.env.VITE_APP_API_URL}`,
       roomPost: {
         address: '',
@@ -161,6 +162,14 @@ export default {
       }
     },
 
+    openModal() {
+      this.showModal = true;
+    },
+
+    closeModal() {
+      this.showModal = false;
+    }
+
   }
 }
 
@@ -175,7 +184,7 @@ export default {
     </div>
     <div class="info-image-slider">
       <div class="info-slide">
-       <img class="image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name">
+       <img class="image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name" @click="openModal">
         <button class="prev-button" @click="prevSlide" :disabled="currentIndex === 0">Left</button>
         <button class="next-button" @click="nextSlide" :disabled="currentIndex === roomPost.imagesList.length - 1">Right</button>
       </div>
@@ -202,9 +211,64 @@ export default {
     <button v-if="loginEmailCheck" @click="deleteRoomPost" class="deleteBtn">글 삭제</button>
   </div>
 
+  <!-- 모달 -->
+  <div class="modal" :class="{ 'is-active': showModal }">
+    <div class="modal-background"></div>
+      <!-- 모달 내용 -->
+      <img class="info-modal-image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name">
+      <button class="close-button" @click="closeModal">닫기</button>
+  </div>
+  <!-- 모달 끝 -->
+
+
+  <!-- 모달 창 끝 -->
+
 </template>
 
 <style>
+
+/* 모달 스타일 */
+.modal {
+  display: none;
+}
+.modal.is-active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.info-modal-image {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+
+}
+
+/* 닫기 버튼 스타일 */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px 20px; /* 패딩 */
+  background-color: #007bff; /* 버튼 배경색 */
+  color: white; /* 버튼 텍스트 색상 */
+  border: none; /* 테두리 없음 */
+  border-radius: 5px; /* 버튼 모서리를 둥글게 */
+  cursor: pointer; /* 커서를 손 모양으로 변경 */
+  z-index: 1000;
+}
+
 
 /* 버튼을 이미지 안으로 배치하고 스타일 조정 */
 .prev-button, .next-button {
@@ -316,17 +380,46 @@ export default {
 @media (max-width: 768px) {
 
   .info-slide {
-    max-width: 600px;
-    max-height: 400px;
     width: auto;
-    height: auto;
+    height: auto; /* 높이를 자동으로 조정하여 비율을 유지 */
+    min-height: 200px;
+    min-width: 400px;
+    overflow: hidden;
+
   }
 
-  .info-slide img {
-    max-width: 600px;
-    max-height: 400px;
-    width: auto;
-    height: auto;
+  .image {
+    width: auto; /* 이미지의 너비를 컨테이너의 폭에 맞게 설정 */
+    height: auto; /* 높이를 자동으로 조정하여 비율을 유지 */
+    object-fit: cover; /* 이미지를 컨테이너에 채우고 비율을 유지 */
+    overflow-x: auto; /* 가로 스크롤을 허용 */
+  }
+
+  /* 이미지 컨테이너 */
+  .modal {
+    touch-action: none; /* 터치 이벤트를 감지할 수 있도록 설정 */
+  }
+
+  /* 모달 이미지 */
+  .info-modal-image {
+    width: 100%; /* 모달 내부에서 이미지의 너비를 조정 */
+    height: auto; /* 비율을 유지하면서 높이를 자동으로 조정 */
+    transform-origin: center; /* 중심점을 가운데로 설정 */
+    transition: transform 0.3s ease; /* 확대/축소 애니메이션 */
+  }
+
+  /* 닫기 버튼 스타일 */
+  .close-button {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    padding: 10px 20px; /* 패딩 */
+    background-color: #007bff; /* 버튼 배경색 */
+    color: white; /* 버튼 텍스트 색상 */
+    border: none; /* 테두리 없음 */
+    border-radius: 5px; /* 버튼 모서리를 둥글게 */
+    cursor: pointer; /* 커서를 손 모양으로 변경 */
+    z-index: 1000;
   }
 
 }

@@ -277,7 +277,7 @@ export default {
           <label for="file">방 사진</label>
           <input type="file" @change="handleFileChange" multiple>
         </div>
-        <button type="submit" class="subBtn">제출</button>
+        <button type="submit" class="subBtn" @click="createRoomPost">제출</button>
       </form>
     </div>
   </div>

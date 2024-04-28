@@ -176,20 +176,17 @@ export default {
   <div class="post-list">
     <h2 class="post-list-title">게시물 목록</h2>
     <div class="post-list-items">
-      <div v-for="item in roomPost" :key="item.id" class="post-item">
+      <div v-for="item in roomPost" :key="item.id" class="post-item" @click="movePostInfo(item.id)">
         <div class="thumbnail">
           <img :src="item.urlPath" alt="썸네일 이미지" @click="movePostInfo(item.id)">
         </div>
 
         <div class="post-info">
-          <h3 class="post-title">{{ item.title }}</h3>
-          <p class="post-content">
-            {{item.deposit +" : "+ this.calculationPrice(item.depositPrice) +" / 보증급 및 월세 : "+this.calculationPrice(item.monthlyPrice) }}
-            <br>
-            {{"방 : "+item.roomName+" / ["+item.squareFootage+"평]"}}
-            <br>
-            {{"주소 : "+item.address}}
-          </p>
+          <p class="post-title">{{ item.title }}</p>
+          <p class="post-content">{{item.deposit +" : "+ this.calculationPrice(item.depositPrice) }}</p>
+          <p class="post-content">{{ "월세 : "+this.calculationPrice(item.monthlyPrice) }}</p>
+          <p class="post-content">{{"["+ item.squareFootage +"평]"}}</p>
+          <p class="post-content">{{item.address}}</p>
         </div>
       </div>
     </div>
@@ -270,6 +267,7 @@ export default {
 }
 .post-info {
   padding: 10px;
+
 }
 .post-title {
   font-size: 18px;
@@ -277,6 +275,7 @@ export default {
 }
 .post-content {
   color: #666;
+  text-overflow: ellipsis; /* 텍스트가 넘치면 줄임표(...)로 표시 */
 }
 
 
