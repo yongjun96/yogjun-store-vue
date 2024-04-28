@@ -40,7 +40,11 @@ export default {
       },
       currentIndex: 0,
       token: '',
-      tokenEmail: ''
+      tokenEmail: '',
+      isLightboxOpen: false,
+      currentImageIndex: 0,
+      rotation: 0,
+      scale: 1
     }
   },
 
@@ -131,6 +135,7 @@ export default {
             .then(response => {
               console.log(response.data);
               //const content = response.data;
+              this.$router.go(-1);
 
             })
             .catch(error => {
@@ -168,7 +173,29 @@ export default {
 
     closeModal() {
       this.showModal = false;
-    }
+    },
+
+    openLightbox(index) {
+      this.currentImageIndex = index;
+      this.isLightboxOpen = true;
+      this.rotation = 0;
+      this.scale = 1;
+    },
+    closeLightbox() {
+      this.isLightboxOpen = false;
+    },
+    rotateLeft() {
+      this.rotation -= 90;
+    },
+    rotateRight() {
+      this.rotation += 90;
+    },
+    zoomIn() {
+      this.scale += 0.1;
+    },
+    zoomOut() {
+      this.scale -= 0.1;
+    },
 
   }
 }
@@ -184,7 +211,7 @@ export default {
     </div>
     <div class="info-image-slider">
       <div class="info-slide">
-       <img class="image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name" @click="openModal">
+       <img class="image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name" @click="openLightbox(currentIndex)">
         <button class="prev-button" @click="prevSlide" :disabled="currentIndex === 0">Left</button>
         <button class="next-button" @click="nextSlide" :disabled="currentIndex === roomPost.imagesList.length - 1">Right</button>
       </div>
@@ -211,63 +238,98 @@ export default {
     <button v-if="loginEmailCheck" @click="deleteRoomPost" class="deleteBtn">글 삭제</button>
   </div>
 
-  <!-- 모달 -->
-  <div class="modal" :class="{ 'is-active': showModal }">
-    <div class="modal-background"></div>
-      <!-- 모달 내용 -->
-      <img class="info-modal-image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name">
-      <button class="close-button" @click="closeModal">닫기</button>
+
+
+    <!-- 이미지 목록 -->
+    <div class="image-gallery">
+      <img
+          v-for="(image, index) in this.roomPost.imagesList"
+          :key="index"
+          :src="image.url"
+          :alt="image.alt"
+          @click="openLightbox(index)"
+      />
+    </div>
+
+
+  <!-- Lightbox 모달 -->
+  <div v-if="isLightboxOpen" class="lightbox">
+    <div class="lightbox-content">
+      <img
+          :src="roomPost.imagesList[currentIndex].urlPath"
+          :alt="roomPost.imagesList[currentIndex].name"
+          :style="{
+            transform: 'rotate(' + rotation + 'deg) scale(' + scale + ')'
+          }"
+      />
+    </div>
+
+    <!-- 조작 버튼 -->
+    <div class="controls">
+      <button @click="rotateLeft">⤺ 회전 (왼쪽)</button>
+      <button @click="rotateRight">⤻ 회전 (오른쪽)</button>
+      <button @click="zoomIn">➕ 확대</button>
+      <button @click="zoomOut">➖ 축소</button>
+      <button @click="closeLightbox">❌ 닫기</button>
+    </div>
+
+    <!-- 모달 배경 -->
+    <div class="lightbox-background" @click="closeLightbox"></div>
   </div>
-  <!-- 모달 끝 -->
 
-
-  <!-- 모달 창 끝 -->
 
 </template>
 
 <style>
 
-/* 모달 스타일 */
-.modal {
-  display: none;
-}
-.modal.is-active {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.modal-background {
-  background-color: rgba(0, 0, 0, 0.75);
+/* Lightbox 모달 */
+.lightbox {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-}
-.info-modal-image {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  z-index: 999;
   width: 100%;
   height: 100%;
-
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
 }
 
-/* 닫기 버튼 스타일 */
-.close-button {
+/* Lightbox 컨텐츠 */
+.lightbox-content {
+  position: relative;
+  max-width: 80%;
+  max-height: 80%;
+}
+
+/* Lightbox 이미지 */
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 100%;
+  transform-origin: center center;
+}
+
+/* Lightbox 조작 버튼 */
+.controls {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 10px 20px; /* 패딩 */
-  background-color: #007bff; /* 버튼 배경색 */
-  color: white; /* 버튼 텍스트 색상 */
-  border: none; /* 테두리 없음 */
-  border-radius: 5px; /* 버튼 모서리를 둥글게 */
-  cursor: pointer; /* 커서를 손 모양으로 변경 */
-  z-index: 1000;
+  bottom: 20px; /* 화면 최하단으로 이동 */
+  left: 50%; /* 수평 중앙 정렬 */
+  transform: translateX(-50%); /* 수평 중앙 정렬을 위한 변환 */
+  display: flex;
+  gap: 10px; /* 버튼 간격 */
 }
+
+/* 조작 버튼 스타일 */
+.controls button {
+  padding: 5px 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 
 
 /* 버튼을 이미지 안으로 배치하고 스타일 조정 */
@@ -301,8 +363,7 @@ export default {
 
 
 .room-detail {
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
   padding: 20px;
 }
 
@@ -322,13 +383,12 @@ export default {
   position: relative;
   width: 800px;
   height: 600px;
-  height: auto;
-  overflow: hidden;
+
 }
 
 .info-slide img {
-  width: 800px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
 }
 
 
@@ -380,46 +440,15 @@ export default {
 @media (max-width: 768px) {
 
   .info-slide {
-    width: auto;
-    height: auto; /* 높이를 자동으로 조정하여 비율을 유지 */
-    min-height: 200px;
-    min-width: 400px;
-    overflow: hidden;
+    position: relative;
+    width: 800px;
+    height: auto;
 
   }
 
-  .image {
-    width: auto; /* 이미지의 너비를 컨테이너의 폭에 맞게 설정 */
-    height: auto; /* 높이를 자동으로 조정하여 비율을 유지 */
-    object-fit: cover; /* 이미지를 컨테이너에 채우고 비율을 유지 */
-    overflow-x: auto; /* 가로 스크롤을 허용 */
-  }
-
-  /* 이미지 컨테이너 */
-  .modal {
-    touch-action: none; /* 터치 이벤트를 감지할 수 있도록 설정 */
-  }
-
-  /* 모달 이미지 */
-  .info-modal-image {
-    width: 100%; /* 모달 내부에서 이미지의 너비를 조정 */
-    height: auto; /* 비율을 유지하면서 높이를 자동으로 조정 */
-    transform-origin: center; /* 중심점을 가운데로 설정 */
-    transition: transform 0.3s ease; /* 확대/축소 애니메이션 */
-  }
-
-  /* 닫기 버튼 스타일 */
-  .close-button {
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    padding: 10px 20px; /* 패딩 */
-    background-color: #007bff; /* 버튼 배경색 */
-    color: white; /* 버튼 텍스트 색상 */
-    border: none; /* 테두리 없음 */
-    border-radius: 5px; /* 버튼 모서리를 둥글게 */
-    cursor: pointer; /* 커서를 손 모양으로 변경 */
-    z-index: 1000;
+  .info-slide img {
+    width: 100%;
+    height: auto;
   }
 
 }

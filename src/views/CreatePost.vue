@@ -37,7 +37,6 @@ export default {
         roomStatusError: '',
         memberIdError: ''
       },
-      isMobile: '',
       token: '',
       email: '',
       name: '',
@@ -198,10 +197,9 @@ export default {
   <!-- 모달 끝 -->
 
 
-  <!-- 모바일 화면용 폼 -->
-  <div class="form-container mobile-form" v-if="isMobile">
+
+  <div class="mobile-form">
     <div class="form-container">
-      <form @submit.prevent="createRoomPost">
         <div class="form-group">
           <label for="title">제목</label>
           <input type="text" id="title" name="title" v-model="roomPostRequest.title" placeholder="제목">
@@ -239,7 +237,7 @@ export default {
         </div>
         <div class="form-group">
           <label for="roomOwner">방 주인</label>
-          <input type="text" id="roomOwner" name="roomOwner" :value="name" disabled>
+          <input type="text" id="roomOwner" name="roomOwner" :value="name" disabled style="text-align: center;">
           <span>{{ roomPostError.roomOwnerError }}</span>
         </div>
         <div class="form-group">
@@ -278,240 +276,13 @@ export default {
           <input type="file" @change="handleFileChange" multiple>
         </div>
         <button type="submit" class="subBtn" @click="createRoomPost">제출</button>
-      </form>
     </div>
   </div>
 
 
-  <!-- PC 화면용 폼 -->
-  <div class="form-container pc-form" v-else>
-
-  <table>
-    <tr>
-      <th><label for="title">제목</label></th>
-      <td>
-        <input type="text" id="title" name="title" v-model="roomPostRequest.title" placeholder=" ex). 제목">
-        <span>{{this.roomPostError.titleError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="name">방 이름</label></th>
-      <td>
-        <input type="text" id="roomName" name="roomName" v-model="roomPostRequest.roomName" placeholder=" ex). 마포구 원룸">
-        <span>{{this.roomPostError.roomNameError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="deposit">전세 및 보증금</label></th>
-      <td>
-        <div class="select-box">
-        <select name="deposit" id="deposit" v-model="roomPostRequest.deposit">
-          <option value="전세">전세</option>
-          <option value="보증금">보증금</option>
-        </select>
-      </div>
-        <span>{{this.roomPostError.depositError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="depositPrice">전세 및 보증금 가격</label></th>
-      <td>
-        <input type="number" id="depositPrice" name="depositPrice" v-model="roomPostRequest.depositPrice" placeholder=" ex). 5000">
-        <span>{{this.roomPostError.depositPriceError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="monthlyPrice">월세</label></th>
-      <td>
-        <input type="number" id="monthlyPrice" name="monthlyPrice" v-model="roomPostRequest.monthlyPrice" placeholder=" ex). 50">
-        <span>{{this.roomPostError.monthlyPriceError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="description">방설명</label></th>
-      <td>
-        <textarea id="description" name="description" type="text" v-model="roomPostRequest.description" placeholder=" ex). 마포구 가장 저렴하고 좋은 방"></textarea>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="roomOwner">방 주인</label></th>
-      <td>
-        <input type="text" id="roomOwner" name="roomOwner" :value="name" disabled>
-        <span>{{this.roomPostError.roomOwnerError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="detail">방 세부 사항</label></th>
-      <td><textarea id="detail" name="detail" type="text" v-model="roomPostRequest.detail" placeholder=" ex). 남향, 역까지 걸어서 5분"></textarea></td>
-    </tr>
-
-    <tr>
-      <th><label for="squareFootage">평수</label></th>
-      <td>
-        <input type="number" id="squareFootage" name="squareFootage" v-model="roomPostRequest.squareFootage" placeholder=" ex). 6평">
-        <span>{{this.roomPostError.squareFootageError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="content">내용</label></th>
-      <td>
-        <textarea id="content" name="content" type="text" v-model="roomPostRequest.content" placeholder=" ex). 마포구에 위치한 좋은 방이고 관리비가 없으며, 필요사항 있으면 바로 처리해 드립니다."></textarea>
-        <span>{{this.roomPostError.contentError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="address">주소</label></th>
-      <td>
-        <input type="text" id="address" name="address" v-model="roomPostRequest.address" placeholder=" ex). 마포구 월드컵북로 27길 78-571 마포빌라 101호">
-        <span>{{this.roomPostError.addressError}}</span>
-      </td>
-    </tr>
-
-    <tr>
-      <th><label for="roomStatus">상태</label></th>
-      <td>
-        <div class="select-box">
-          <select name="roomStatus" id="roomStatus" v-model="roomPostRequest.roomStatus">
-            <option value="매매">매매</option>
-            <option value="임대">임대</option>
-            <option value="종료">종료</option>
-          </select>
-        </div>
-        <span>{{this.roomPostError.roomStatusError}}</span>
-      </td>
-    </tr>
-
-
-    <tr>
-      <th><label for="file">방 사진</label></th>
-      <td>
-        <div>
-          <input type="file" @change="handleFileChange" multiple>
-        </div>
-      </td>
-    </tr>
-
-  </table>
-  <button class="subBtn" @click="createRoomPost">제출</button>
-
-</div>
-
 </template>
 
 <style>
-
-table {
-  width: 50%;
-  margin: 0 auto 20px; /* 테이블을 가운데 정렬하고 아래쪽에 여백을 추가합니다. */
-  border-collapse: collapse;
-  border: 2px solid #ddd;
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  width: 20%; /* 라벨 너비 조절 */
-  text-align: center;
-}
-
-input[type="text"] {
-  width: calc(100% - 16px); /* 입력 필드 너비 조절 */
-  padding: 7px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.subBtn {
-  display: block;
-  width: 20%;
-  margin: 0 auto;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  text-align: center;
-}
-
-/* 입력 그룹 스타일링 */
-.form-container {
-  padding: 0 20px; /* 좌우 여백 추가 */
-}
-
-.input-group {
-  margin-bottom: 20px; /* 입력 그룹 사이의 간격 설정 */
-}
-
-.input-group label {
-  display: block; /* 라벨을 블록 요소로 설정하여 위아래로 배치 */
-  margin-bottom: 5px; /* 라벨 아래 여백 추가 */
-}
-
-.input-group input,
-.input-group textarea,
-.input-group select {
-  width: 100%; /* 입력 필드를 그룹의 너비에 맞게 설정 */
-  padding: 7px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.subBtn {
-  width: 100%; /* 제출 버튼을 그룹의 너비에 맞게 설정 */
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  text-align: center;
-}
-
-/*----------------------------------------------------------------------------------------------------------*/
-
-.select-box {
-  width: calc(100% - 16px); /* 입력 필드 너비 조절 */
-  padding: 0px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-}
-.select-box select {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  appearance: none;
-}
-.select-box::after {
-  content: '\25BC';
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-}
-
 
 /* 선택적으로 스타일링을 할 수 있습니다. */
 textarea {
@@ -523,12 +294,6 @@ textarea {
   border-radius: 5px;
   resize: none; /* 사용자가 크기를 조절할 수 없도록 설정 */
 }
-
-span {
-  display: block;
-  color: red;
-}
-
 
 
 /* 모달 스타일 */
@@ -574,17 +339,11 @@ span {
 }
 
 
-
-
-/* 모바일 화면용 스타일 */
 .mobile-form {
-  /* 모바일에 맞게 스타일 조정 */
-  .createPost {
-    padding: 20px;
-  }
 
   .form-container {
     margin-bottom: 20px;
+    width: 40%;
   }
 
   .form-group {
@@ -597,7 +356,6 @@ span {
   }
 
   .form-group input,
-  .form-group select,
   .form-group textarea {
     width: 100%;
     padding: 10px;
@@ -658,7 +416,7 @@ span {
 
   span {
     color: red;
-    font-size: 0.8em;
+    font-size: 1em;
   }
 
 }
@@ -666,13 +424,21 @@ span {
 /* 미디어 쿼리 */
 @media (min-width: 768px) {
   .mobile-form {
-    display: none; /* 모바일 화면에서는 숨김 */
+    margin: 0 auto; /* 수평 중앙 정렬을 위해 좌우 마진을 자동으로 설정 */
+    display: flex; /* flexbox 레이아웃을 사용 */
+    flex-direction: column; /* 요소를 세로 방향으로 배치 */
+    justify-content: center; /* 수직 중앙 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+    padding: 20px; /* 컨테이너 내부 패딩 */
   }
 }
 
 @media (max-width: 767px) {
-  .pc-form {
-    display: none; /* PC 화면에서는 숨김 */
+  .mobile-form {
+    .form-container {
+      margin-bottom: 20px;
+      width: 100%;
+    }
   }
 }
 

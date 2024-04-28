@@ -8,13 +8,13 @@ export default {
       errorMessage: '', // 에러 메시지
 
       images: [
-        '/public/main_images/main1.jpg',
-        '/public/main_images/main2.png',
-        '/public/main_images/main3.jpg',
+        '../../public/images/main1.jpg',
+        '../../public/images/main2.png',
+        '../../public/images/main3.jpg'
       ],
       currentIndex: 0,
       intervalId: null,
-      slideInterval: 5000, // 3초 간격
+      slideInterval: 5000, // 5초 간격
 
     }
   },
@@ -213,7 +213,6 @@ export default {
     width: 100%; /* 모바일 화면에서는 슬라이드 너비를 100%로 */
     height: 300px; /* 모바일 화면에서는 슬라이드 높이를 줄임 */
   }
-
 
   /* 모달의 너비를 모바일에 맞게 조정 */
   .modal-content {

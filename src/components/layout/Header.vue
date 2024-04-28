@@ -1,30 +1,3 @@
-<template>
-  <header>
-    <!-- 헤더 내용 -->
-    <h1 id="headerTitle">방장</h1>
-
-    <!-- 햄버거 버튼 -->
-    <button class="hamburger-button" @click="toggleMenu">
-      <!-- 햄버거 아이콘 -->
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
-    <nav :class="{ 'is-active': isMenuOpen }">
-      <router-link @click="toggleMenu" to="/">메인</router-link>
-      <router-link @click="toggleMenu" to="/create-post">글작성</router-link>
-      <router-link @click="toggleMenu" :to="{ path: '/post-list', query: { page: 1 } }">글목록</router-link>
-
-      <!-- 로그인/로그아웃 링크를 동적으로 표시 -->
-      <router-link @click="logout" v-if="isLoggedIn" to="#">로그아웃</router-link>
-      <router-link @click="toggleMenu" v-if="isLoggedIn" to="/profile">회원정보</router-link>
-      <router-link @click="toggleMenu" v-else to="/login"  class="login-button">로그인</router-link>
-      <router-link @click="toggleMenu" to="/signup">회원가입</router-link>
-    </nav>
-
-  </header>
-</template>
 <script>
 
 export default {
@@ -71,6 +44,35 @@ export default {
 
 </script>
 
+<template>
+  <header>
+    <!-- 헤더 내용 -->
+    <h1 id="headerTitle">방장</h1>
+
+    <!-- 햄버거 버튼 -->
+    <button class="hamburger-button" @click="toggleMenu">
+      <!-- 햄버거 아이콘 -->
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav :class="{ 'is-active': isMenuOpen }">
+      <router-link @click="toggleMenu" to="/">메인</router-link>
+      <router-link @click="toggleMenu" to="/create-post">글작성</router-link>
+      <router-link @click="toggleMenu" :to="{ path: '/post-list', query: { page: 1 } }">글목록</router-link>
+
+      <!-- 로그인/로그아웃 링크를 동적으로 표시 -->
+      <router-link @click="logout" v-if="isLoggedIn" to="#">로그아웃</router-link>
+      <router-link @click="toggleMenu" v-if="isLoggedIn" to="/profile">회원정보</router-link>
+      <router-link @click="toggleMenu" v-else to="/login"  class="login-button">로그인</router-link>
+      <router-link @click="toggleMenu" to="/signup">회원가입</router-link>
+    </nav>
+
+  </header>
+</template>
+
+
 <style>
 /* 햄버거 버튼 스타일 */
 .hamburger-button {
@@ -80,11 +82,10 @@ export default {
   background: none;
   border: none;
   cursor: pointer;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  display: none;
 }
 
 .hamburger-button span {
@@ -92,6 +93,7 @@ export default {
   height: 2px;
   background-color: white;
   margin: 4px 0;
+
 }
 
 /* 내비게이션 스타일 */
@@ -119,7 +121,11 @@ nav a:hover {
     display: none;
   }
 
+  /* 햄버거 버튼 스타일 */
   .hamburger-button {
+    position: absolute;
+    top: 7px; /* 헤더의 상단에 배치 */
+    right: 10px; /* 헤더의 오른쪽에 배치 */
     background: none;
     border: none;
     cursor: pointer;
@@ -127,7 +133,6 @@ nav a:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    display: block;
   }
 
   /* 메뉴가 열려 있을 때는 메뉴를 표시합니다 */

@@ -267,6 +267,7 @@ export default {
 }
 .post-info {
   padding: 10px;
+  max-height: 200px;
 
 }
 .post-title {
@@ -360,6 +361,12 @@ span.search-container {
     margin: 0 auto; /* 가운데 정렬을 위해 좌우 여백을 자동으로 조정 */
     justify-content: center; /* 수평 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
+  }
+
+  .post-info {
+    padding: 10px;
+    max-height: 200px;
+
   }
 
   /* 썸네일 조정 */
