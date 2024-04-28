@@ -215,7 +215,7 @@ export default {
   vertical-align: middle;
   padding-bottom: 20px;
   width: 20px;
-  background-image: url('/googleLogo.png');
+  background-image: url('@/assets/googleLogo.png');
   background-size: cover;
 }
 
@@ -223,6 +223,7 @@ export default {
   vertical-align: middle;
   display: inline;
   color: #3273dc;
+  margin-left: 5px;
 }
 
 
