@@ -1,10 +1,9 @@
 name: main Build
 
-# 리드미 수정 중 잠시 중지
-#on:
-#  push:
-#    branches:
-#      - main  # main브랜치 push할 이벤트 발생
+on:
+  push:
+    branches:
+      - main  # main브랜치 push할 이벤트 발생
 
 jobs:
   build:
