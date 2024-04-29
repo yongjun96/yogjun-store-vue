@@ -138,11 +138,11 @@ nav a:hover {
 
 @media (max-width: 767px) {
     .content {
-        max-height: calc(100vh - 50px); /* 화면 전체 높이에서 헤더와 푸터의 높이를 뺀 값으로 설정 */
+        max-height: calc(100vh - 0px); /* 화면 전체 높이에서 헤더와 푸터의 높이를 뺀 값으로 설정 */
         border-radius: 5px; /* 보더의 모서리를 둥글게 만듦 */
         background-color: #f9f9f9; /* 배경색 지정 */
-        padding-top: 100px; /* 내부 여백 */
-        padding-bottom: 50px; /* 내부 여백 */
+        padding-top: 150px; /* 내부 여백 */
+        padding-bottom: 150px; /* 내부 여백 */
         margin: 0 auto; /* 가운데 정렬 */
     }
 
@@ -154,7 +154,6 @@ nav a:hover {
         color: white; /* 헤더 텍스트 색상 */
         text-align: center; /* 텍스트 중앙 정렬 */
         padding: 10px; /* 내부 여백 */
-        height: 120px;
         z-index: 999;
     }
 }

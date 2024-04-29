@@ -191,10 +191,10 @@ export default {
       this.rotation += 90;
     },
     zoomIn() {
-      this.scale += 0.1;
+      this.scale += 0.3;
     },
     zoomOut() {
-      this.scale -= 0.1;
+      this.scale -= 0.3;
     },
 
   }
@@ -240,16 +240,7 @@ export default {
 
 
 
-    <!-- 이미지 목록 -->
-    <div class="image-gallery">
-      <img
-          v-for="(image, index) in this.roomPost.imagesList"
-          :key="index"
-          :src="image.url"
-          :alt="image.alt"
-          @click="openLightbox(index)"
-      />
-    </div>
+
 
 
   <!-- Lightbox 모달 -->
@@ -273,8 +264,6 @@ export default {
       <button @click="closeLightbox">❌ 닫기</button>
     </div>
 
-    <!-- 모달 배경 -->
-    <div class="lightbox-background" @click="closeLightbox"></div>
   </div>
 
 
@@ -296,24 +285,22 @@ export default {
   z-index: 999;
 }
 
-.lightbox-background {
-  position: fixed;
-  z-index: -1;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
 /* Lightbox 컨텐츠 */
 .lightbox-content {
-  position: relative;
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 1200px;
+  overflow-y: auto; /* 세로 스크롤이 필요할 때만 스크롤이 나타나도록 설정 */
+  transform-origin: center center;
+
 }
 
 /* Lightbox 이미지 */
 .lightbox-content img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 50%;
+  height: 50%;
   transform-origin: center center;
+
 }
 
 /* Lightbox 조작 버튼 */
@@ -387,8 +374,8 @@ export default {
 
 .info-slide {
   position: relative;
-  width: 800px;
-  height: 600px;
+  width: 1000px;
+  height: 800px;
 
 }
 
