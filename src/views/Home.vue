@@ -128,10 +128,6 @@ export default {
   transition: transform 0.3s ease-in-out; /* 트랜지션 효과 */
 }
 
-.welcome-text:hover {
-  transform: scale(1.1); /* 마우스 호버 시 확대 */
-}
-
 
 /* 모달 스타일 */
 .modal {

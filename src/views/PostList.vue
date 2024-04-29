@@ -202,7 +202,7 @@ export default {
       </select>
     </div>
     <input type="text" placeholder="검색어를 입력하세요..." v-model="this.searchContent" @keyup.enter="getRoomPostList">
-    <button type="submit" @click="getRoomPostList">검색</button>
+    <button type="button" @click="getRoomPostList">검색</button>
   </div>
 
 
@@ -218,7 +218,7 @@ export default {
   </div>
 
     <input type="text" placeholder="검색어를 입력하세요..." v-model="this.searchContent" @keyup.enter="getRoomPostList">
-    <button type="submit" @click="getRoomPostList">검색</button>
+    <button type="button" @click="getRoomPostList">검색</button>
   </span>
 
   <div>
@@ -353,57 +353,69 @@ span.search-container {
 
   /* 게시물 목록 조정 */
   .post-list-items {
-    display: grid;
-    //grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    grid-template-columns: 1fr;
-    gap: 20px;
-    width: 80%; /* 컨텐츠 영역의 너비를 80%로 설정 */
-    margin: 0 auto; /* 가운데 정렬을 위해 좌우 여백을 자동으로 조정 */
-    justify-content: center; /* 수평 가운데 정렬 */
-    align-items: center; /* 수직 가운데 정렬 */
+    display: flex; /* 요소를 수평으로 배치 */
+    flex-direction: column; /* 각 게시물을 수직으로 배치 */
+    gap: 20px; /* 게시물 간격 */
+    width: 100%; /* 전체 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+  }
+
+  /* 각 게시물 요소 */
+  .post-item {
+    display: flex; /* 이미지와 설명을 수평으로 배치 */
+    align-items: center; /* 수직 정렬 */
+    justify-content: flex-start; /* 수평 정렬: 왼쪽에 붙음 */
+    width: 100%; /* 전체 너비 */
+    height: 200px;
+  }
+
+  .post-title {
+    font-size: 14px;
   }
 
   .post-info {
-    padding: 10px;
-    max-height: 200px;
-
+    font-size: 12px;
   }
 
-  /* 썸네일 조정 */
+  /* 썸네일 이미지 조정 */
   .thumbnail {
-    height: auto; /* 썸네일 높이 조정 */
+    width: 50%; /* 썸네일 너비를 전체 컨테이너 너비의 절반으로 설정 */
+    height: 100%; /* 컨테이너 높이에 맞게 이미지 높이 설정 */
   }
 
-  /* 검색 컨테이너 조정 */
-  .search-container {
-    flex-direction: column; /* 세로로 나열 */
-    width: 100%; /* 전체 너비 */
+  /* 썸네일 이미지 */
+  .thumbnail img {
+    width: 100%; /* 썸네일 너비에 맞게 이미지 너비 설정 */
+    height: 100%; /* 썸네일 높이에 맞게 이미지 높이 설정 */
+    object-fit: cover; /* 이미지를 커버하도록 설정 */
   }
 
-  .search-container input[type="text"],
-  .search-container button {
-    width: 100%; /* 전체 너비 */
-    margin-bottom: 10px; /* 입력 필드와 버튼 사이 간격 */
+  /* 설명 조정 */
+  .post-info {
+    width: 50%; /* 설명 영역의 너비를 전체 컨테이너 너비의 절반으로 설정 */
+    padding-left: 10px; /* 이미지와 설명 사이 간격 */
   }
 
-  /* 모바일 검색 컨테이너 조정 */
-  .mobile-search-container .select-box,
-  .mobile-search-container input[type="text"],
-  .mobile-search-container button {
-    width: 100%; /* 전체 너비 */
-    margin-bottom: 10px; /* 요소 사이 간격 */
-  }
 
   /* 모바일 검색 컨테이너 */
-  .mobile-search-container {
-    display: flex;
-    flex-direction: column;
+  .mobile-search-container .select-box {
+    margin-top: 10px;
+    margin-bottom: 10px;
     width: 100%; /* 전체 너비 */
-    align-items: stretch; /* 요소를 너비에 맞게 늘림 */
   }
 
-
-
+  .mobile-search-container button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 7px 15px;
+    background-color: #007bff; /* 배경색 */
+    color: white; /* 글자색 */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none; /* 포커스 시 테두리 제거 */
+  }
 }
 
 </style>

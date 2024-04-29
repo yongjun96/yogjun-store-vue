@@ -101,7 +101,7 @@ export default {
           })
     },
 
-    async createRoomPost() {
+    createRoomPost() {
 
       // 사진을 한장도 업로드 하지 않을 경우
       if(this.files.length <= 0){
@@ -110,23 +110,27 @@ export default {
         return;
       }
 
+      // 사진이 10장 초과되는 경우
+      else if(this.files.length > 10) {
+        this.signupMessageOne = '사진은 10장 까지만 등록 가능합니다.';
+        this.openModal();
+        return;
+      }
+
       this.roomPostRequest.roomOwner = this.name;
 
       const formData = new FormData();
 
-      // roomPostDto를 JSON으로 미리 변환해서 formData에 넣는다.
-      for (const key in this.roomPostRequest) {
-        if (Object.prototype.hasOwnProperty.call(this.roomPostRequest, key)) {
-          formData.append(key, this.roomPostRequest[key]);
-          console.log(this.roomPostRequest[key]);
-        }
-      }
+      formData.append('roomPostRequest', JSON.stringify(this.roomPostRequest));
 
       // 업로드된 이미지 uploadImages 담기.
       for (let i = 0; i < this.files.length; i++) {
         formData.append('uploadImages', this.files[i]);
       }
 
+      // 업로드 중 모달 표시
+      this.signupMessageOne = '업로드 중...';
+      this.openModal();
 
       axios.post(import.meta.env.VITE_APP_API_URL + '/room-post/create-s3', formData, {
         headers: {
@@ -136,14 +140,16 @@ export default {
       })
           .then(() => {
             console.log("방 글 작성 완료");
-
-              this.$router.push('/post-list');
-
+            this.$router.push('/post-list');
           })
 
           .catch(error => {
 
-            if(error.response.data !== null){
+            if(error.response.data.message !== null){
+              this.signupMessageOne = error.response.data.message;
+              this.openModal();
+            }
+            else if(error.response.data !== null){
               this.roomPostError.titleError = error.response.data.title;
               this.roomPostError.roomNameError = error.response.data.roomName;
               this.roomPostError.depositError = error.response.data.deposit;
@@ -156,8 +162,11 @@ export default {
               this.roomPostError.roomStatusError = error.response.data.roomStatus;
               console.log(error.response.data.memberId);
             }
-
-            console.error('Error fetching data:', error);
+            else {
+              this.signupMessageOne = '서버 에러입니다. 다시 시도해 주세요.';
+              this.openModal();
+              console.error('Error fetching data:', error);
+            }
           })
     },
 
@@ -275,7 +284,7 @@ export default {
           <label for="file">방 사진</label>
           <input type="file" @change="handleFileChange" multiple>
         </div>
-        <button type="submit" class="subBtn" @click="createRoomPost">제출</button>
+        <button type="button" class="subBtn" @click="createRoomPost">제출</button>
     </div>
   </div>
 

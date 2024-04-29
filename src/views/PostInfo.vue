@@ -212,9 +212,11 @@ export default {
     <div class="info-image-slider">
       <div class="info-slide">
        <img class="image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name" @click="openLightbox(currentIndex)">
-        <button class="prev-button" @click="prevSlide" :disabled="currentIndex === 0">Left</button>
-        <button class="next-button" @click="nextSlide" :disabled="currentIndex === roomPost.imagesList.length - 1">Right</button>
       </div>
+    </div>
+    <div class="btn-slide">
+      <button class="prev-button" @click="prevSlide" :disabled="currentIndex === 0">Left</button>
+      <button class="next-button" @click="nextSlide" :disabled="currentIndex === roomPost.imagesList.length - 1">Right</button>
     </div>
 
     <div class="room-info">
@@ -289,18 +291,19 @@ export default {
 .lightbox-content {
   max-width: 100%;
   max-height: 100%;
-  min-width: 1200px;
   overflow-y: auto; /* 세로 스크롤이 필요할 때만 스크롤이 나타나도록 설정 */
+  overflow-x: auto; /* 세로 스크롤이 필요할 때만 스크롤이 나타나도록 설정 */
   transform-origin: center center;
 
 }
 
 /* Lightbox 이미지 */
 .lightbox-content img {
+  min-width: 1400px;
+  min-height: 800px;
   width: 50%;
   height: 50%;
   transform-origin: center center;
-
 }
 
 /* Lightbox 조작 버튼 */
@@ -325,26 +328,31 @@ export default {
 
 
 
-/* 버튼을 이미지 안으로 배치하고 스타일 조정 */
+/* 버튼 컨테이너 */
+.btn-slide {
+  position: relative; /* 이미지 하단에 위치 */
+  top: 10px; /* 이미지 바로 아래에 위치하도록 조정 */
+  display: flex; /* 수평으로 나란히 배치 */
+  justify-content: center; /* 중앙 정렬 */
+  gap: 20px; /* 버튼 간격 */
+}
+
+/* 버튼 스타일 */
 .prev-button, .next-button {
-  position: absolute; /* 버튼의 위치를 이미지 안으로 고정 */
-  top: 50%; /* 이미지의 중간 높이로 위치 조정 */
-  transform: translateY(-50%); /* 수직 중심으로 조정 */
-  padding: 10px;
+  padding: 10px; /* 버튼에 여백 추가 */
   background-color: rgba(0, 0, 0, 0.5); /* 배경 색상 */
   color: white; /* 글자 색상 */
   border: none; /* 테두리 없음 */
-  border-radius: 50%; /* 둥근 모양으로 설정 */
-  cursor: pointer;
-  z-index: 1; /* z-index를 1로 설정하여 이미지 위에 배치 */
+  border-radius: 50%; /* 둥근 모양 */
+  cursor: pointer; /* 커서 스타일 */
 }
 
 .prev-button {
-  left: 10px; /* 왼쪽에서 10px 위치 조정 */
+  left: 20px; /* 왼쪽에서 10px 위치 조정 */
 }
 
 .next-button {
-  right: 10px; /* 오른쪽에서 10px 위치 조정 */
+  right: 20px; /* 오른쪽에서 10px 위치 조정 */
 }
 
 /* 비활성화된 버튼 스타일 조정 */
@@ -374,14 +382,15 @@ export default {
 
 .info-slide {
   position: relative;
-  width: 1000px;
-  height: 800px;
+  width: 1200px;
+  height: 700px;
 
 }
 
 .info-slide img {
-  width: 100%;
-  height: 100%;
+  max-width: 1200px;
+  max-height: 700px;
+  min-height: 700px;
 }
 
 
@@ -435,14 +444,23 @@ export default {
   .info-slide {
     position: relative;
     width: 800px;
-    height: auto;
+    height: 600px;
 
   }
 
   .info-slide img {
-    width: 100%;
-    height: auto;
+    max-width: 800px;
+    max-height: 600px;
+    min-height: 600px;
   }
 
+  /* Lightbox 이미지 */
+  .lightbox-content img {
+    min-width: 800px;
+    min-height: 600px;
+    width: 50%;
+    height: 50%;
+    transform-origin: center center;
+  }
 }
 </style>
