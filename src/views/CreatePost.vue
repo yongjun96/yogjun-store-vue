@@ -8,32 +8,28 @@ export default {
       roomPostRequest: {
         id: '',
         title: '',
-        roomName: '',
         deposit: '전세',
         depositPrice: '',
         monthlyPrice: '',
-        description: '',
         roomOwner: '',
-        detail: '',
         squareFootage: '',
         content: '',
         address: '',
+        detailAddress: '',
         roomStatus: '임대',
         memberId: ''
       },
       roomPostError: {
         idError: '',
         title: '',
-        roomNameError: '',
         depositError: '',
         depositPriceError: '',
         monthlyPriceError: '',
-        descriptionError: '',
         roomOwnerError: '',
-        detailError: '',
         squareFootageError: '',
         contentError: '',
         addressError: '',
+        detailAddressError: '',
         roomStatusError: '',
         memberIdError: ''
       },
@@ -43,7 +39,8 @@ export default {
       role: '',
       files: [],
       showModal: false,
-      signupMessageOne: ''
+      signupMessageOne: '',
+      loading: false, // 로딩 중 상태
     };
   },
 
@@ -67,6 +64,7 @@ export default {
 
     console.log(this.email); // 토큰에 포함된 사용자 ID 출력
     console.log(this.role); // 토큰에 포함된 사용자 유형 출력
+
   },
 
   created() {},
@@ -117,10 +115,12 @@ export default {
         return;
       }
 
+      // 조회된 회원을 roomOwner 에 넣어 줌
       this.roomPostRequest.roomOwner = this.name;
 
       const formData = new FormData();
 
+      // roomPostRequest 를 formData 에 추가
       formData.append('roomPostRequest', JSON.stringify(this.roomPostRequest));
 
       // 업로드된 이미지 uploadImages 담기.
@@ -128,9 +128,8 @@ export default {
         formData.append('uploadImages', this.files[i]);
       }
 
-      // 업로드 중 모달 표시
-      this.signupMessageOne = '업로드 중...';
-      this.openModal();
+      // 로딩 중 ...
+      this.loading = true;
 
       axios.post(import.meta.env.VITE_APP_API_URL + '/room-post/create-s3', formData, {
         headers: {
@@ -145,13 +144,10 @@ export default {
 
           .catch(error => {
 
-            if(error.response.data.message !== null){
-              this.signupMessageOne = error.response.data.message;
-              this.openModal();
-            }
-            else if(error.response.data !== null){
+            this.loading = false;
+
+             if(error.response.data !== null){
               this.roomPostError.titleError = error.response.data.title;
-              this.roomPostError.roomNameError = error.response.data.roomName;
               this.roomPostError.depositError = error.response.data.deposit;
               this.roomPostError.depositPriceError = error.response.data.depositPrice;
               this.roomPostError.monthlyPriceError = error.response.data.monthlyPrice;
@@ -159,13 +155,24 @@ export default {
               this.roomPostError.squareFootageError = error.response.data.squareFootage;
               this.roomPostError.contentError = error.response.data.content;
               this.roomPostError.addressError = error.response.data.address;
+              this.roomPostError.detailAddressError = error.response.data.detailAddress;
               this.roomPostError.roomStatusError = error.response.data.roomStatus;
               console.log(error.response.data.memberId);
             }
             else {
-              this.signupMessageOne = '서버 에러입니다. 다시 시도해 주세요.';
-              this.openModal();
-              console.error('Error fetching data:', error);
+
+               console.error('Error fetching data:', error);
+
+               if(error.response.data.message !== null){
+
+                 this.signupMessageOne = error.response.data.message;
+                 this.openModal();
+
+               }else{
+
+                 this.signupMessageOne = '서버 에러입니다. 다시 시도해 주세요.';
+                 this.openModal();
+               }
             }
           })
     },
@@ -180,7 +187,48 @@ export default {
     },
     closeModal() {
       this.showModal = false; // 모달 닫기
-    }
+    },
+
+    // 카카오 지도 주소
+    openDaumPostcode() {
+      new daum.Postcode({
+        oncomplete: (data) => {
+          // 각 주소의 노출 규칙에 따라 주소를 조합
+          let addr = '';
+          let extraAddr = '';
+
+          // 사용자가 선택한 주소 타입에 따라 주소를 가져옴
+          if (data.userSelectedType === 'R') { // 도로명 주소 선택
+            addr = data.roadAddress;
+          } else { // 지번 주소 선택
+            addr = data.jibunAddress;
+          }
+
+          // 도로명 주소 선택 시 참고항목 조합
+          if (data.userSelectedType === 'R') {
+            if (data.bname && /[동|로|가]$/g.test(data.bname)) {
+              extraAddr += data.bname;
+            }
+            if (data.buildingName && data.apartment === 'Y') {
+              extraAddr += (extraAddr ? ', ' + data.buildingName : data.buildingName);
+            }
+            if (extraAddr) {
+              extraAddr = ` (${extraAddr})`;
+            }
+          }
+
+          // 필드에 우편번호, 주소, 상세주소, 참고항목 입력
+          this.roomPostRequest.address = data.zonecode;
+          this.roomPostRequest.address = addr;
+          // 참고 사항은 사용 안함.
+          //this.extraAddress = extraAddr;
+          // 상세주소 필드에 커서 이동
+          this.$nextTick(() => {
+            this.$refs.roomPostRequest.detailAddress.focus();
+          });
+        },
+      }).open();
+    },
 
 
   },
@@ -191,6 +239,11 @@ export default {
 </script>
 
 <template>
+
+  <!-- 로딩 중일 때 표시할 이미지 -->
+  <div v-if="loading" class="loading-container">
+    <img src="/images/loading.gif" alt="Loading...">
+  </div>
 
   <!-- 모달 -->
   <div class="modal" :class="{ 'is-active': showModal }">
@@ -215,11 +268,6 @@ export default {
           <span>{{ roomPostError.titleError }}</span>
         </div>
         <div class="form-group">
-          <label for="roomName">방 이름</label>
-          <input type="text" id="roomName" name="roomName" v-model="roomPostRequest.roomName" placeholder="방 이름">
-          <span>{{ roomPostError.roomNameError }}</span>
-        </div>
-        <div class="form-group">
           <label for="deposit">전세 및 보증금</label>
           <div class="select-box">
             <select name="deposit" id="deposit" v-model="roomPostRequest.deposit">
@@ -240,19 +288,9 @@ export default {
           <span>{{ roomPostError.monthlyPriceError }}</span>
         </div>
         <div class="form-group">
-          <label for="description">방 설명</label>
-          <textarea id="description" name="description" v-model="roomPostRequest.description" placeholder="방 설명"></textarea>
-          <span>{{ roomPostError.descriptionError }}</span>
-        </div>
-        <div class="form-group">
           <label for="roomOwner">방 주인</label>
           <input type="text" id="roomOwner" name="roomOwner" :value="name" disabled style="text-align: center;">
           <span>{{ roomPostError.roomOwnerError }}</span>
-        </div>
-        <div class="form-group">
-          <label for="detail">방 세부 사항</label>
-          <textarea id="detail" name="detail" v-model="roomPostRequest.detail" placeholder="세부 사항"></textarea>
-          <span>{{ roomPostError.detailError }}</span>
         </div>
         <div class="form-group">
           <label for="squareFootage">평수</label>
@@ -266,8 +304,10 @@ export default {
         </div>
         <div class="form-group">
           <label for="address">주소</label>
-          <input type="text" id="address" name="address" v-model="roomPostRequest.address" placeholder="주소">
-          <span>{{ roomPostError.addressError }}</span>
+            <input type="text" id="address" name="address" v-model="roomPostRequest.address" placeholder="주소" style="width: 50%;" disabled>
+            <input type="text" id="detailAddress" name="detailAddress" v-model="roomPostRequest.detailAddress" placeholder="상세 주소" style="width: 30%;">
+            <input type="button" @click="openDaumPostcode" value="주소 검색" style="width: 20%;">
+            <span>{{ roomPostError.addressError }}</span> <span style="display: block;">{{ roomPostError.detailAddressError }}</span>
         </div>
         <div class="form-group">
           <label for="roomStatus">상태</label>
@@ -275,7 +315,7 @@ export default {
             <select name="roomStatus" id="roomStatus" v-model="roomPostRequest.roomStatus">
               <option value="매매">매매</option>
               <option value="임대">임대</option>
-              <option value="종료">종료</option>
+              <!--<option value="종료">종료</option>-->
             </select>
           </div>
           <span>{{ roomPostError.roomStatusError }}</span>
@@ -427,6 +467,7 @@ textarea {
     color: red;
     font-size: 1em;
   }
+
 
 }
 

@@ -7,6 +7,11 @@ module.exports = {
     node: true,
     es6: true,
   },
+
+  "globals": {
+    "daum": "readonly"
+  },
+
   root: true,
   'extends': [
     'plugin:vue/vue3-essential',

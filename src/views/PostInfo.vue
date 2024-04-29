@@ -10,14 +10,12 @@ export default {
       url: `${import.meta.env.VITE_APP_API_URL}`,
       roomPost: {
         address: '',
+        detailAddress: '',
         content: '',
         deposit: '',
         depositPrice: '',
-        description: '',
-        detail: '',
         id: '',
         monthlyPrice: '',
-        roomName: '',
         roomOwner: '',
         roomStatus: '',
         squareFootage: '',
@@ -88,8 +86,8 @@ export default {
 
             this.roomPost.id = content.id;
             this.roomPost.title = content.title;
-            this.roomPost.roomName = content.roomName;
             this.roomPost.address = content.address;
+            this.roomPost.detailAddress = content.detailAddress;
             this.roomPost.content = content.content;
             this.roomPost.depositPrice = content.depositPrice;
             this.roomPost.deposit = content.deposit;
@@ -100,14 +98,12 @@ export default {
             this.roomPost.member.email = content.member.email;
             this.roomPost.roomOwner = content.member.name;
 
-            this.roomPost.description = content.description;
-            this.roomPost.detail = content.detail;
             this.roomPost.imagesList = content.imagesList.map(image => ({
               id: image.id,
               name: image.name,
               path: image.path,
               urlPath: `${image.name}`,
-              // localhost path의 경우
+              // localhost path 의 경우
               //urlPath: `${this.url}/${image.path}/${image.name}`
             }));
 
@@ -206,9 +202,6 @@ export default {
 
 
   <div class="room-detail">
-    <div class="room-header">
-      <h1>{{ roomPost.title }}</h1>
-    </div>
     <div class="info-image-slider">
       <div class="info-slide">
        <img class="image" :src="roomPost.imagesList[currentIndex].urlPath" :alt="roomPost.imagesList[currentIndex].name" @click="openLightbox(currentIndex)">
@@ -220,14 +213,11 @@ export default {
     </div>
 
     <div class="room-info">
-      <h2>{{ roomPost.roomName }}</h2>
-      <h3>{{"주소 : "+ roomPost.address }}</h3>
+      <h1>{{ roomPost.title }}</h1>
       <br>
       <h3>{{ roomPost.content }}</h3>
       <br>
-      <h3>{{ roomPost.description }}</h3>
-      <br>
-      <h3>{{ roomPost.detail }}</h3>
+      <h3>{{"주소 : "+ roomPost.address }} {{ roomPost.detailAddress }}</h3>
       <br>
 
       <h3> {{ roomPost.deposit +" : "+calculationPrice(roomPost.depositPrice) }}</h3>
@@ -366,11 +356,6 @@ export default {
 .room-detail {
   width: 100%;
   padding: 20px;
-}
-
-.room-header {
-  text-align: center;
-  margin-bottom: 20px;
 }
 
 .info-image-slider {

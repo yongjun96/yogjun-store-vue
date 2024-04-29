@@ -46,6 +46,7 @@ export default {
       showModal: false,
       isVisible: false,
       isLoading: false,
+      loading: false,
       delMemberShow: false,
       isPasswordChangeVisible: false,
     };
@@ -136,7 +137,7 @@ export default {
 
     mailSend() {
 
-      this.isLoading = true; // 로딩 중 상태로 설정
+      this.loading = true; // 로딩 중 상태로 설정
 
       axios.post(import.meta.env.VITE_APP_API_URL + '/mail/mail-send',
           {
@@ -149,7 +150,7 @@ export default {
           })
           .then(() => {
 
-            this.isLoading = false;
+            this.loading = false;
 
             this.signupMessageOne = '메일이 전송되었습니다.';
             this.openModal();
@@ -364,6 +365,11 @@ export default {
 
 <template>
 
+  <!-- 로딩 중일 때 표시할 이미지 -->
+  <div v-if="loading" class="loading-container">
+    <img src="/images/loading.gif" alt="Loading...">
+  </div>
+
   <!-- 모달 -->
   <div class="modal" :class="{ 'is-active': showModal }">
     <div class="modal-background" @click="closeModal"></div>
@@ -416,11 +422,6 @@ export default {
 
 
   <div>
-    <div v-if="isLoading" class="loading-overlay">
-      <!-- 로딩 중일 때 표시할 내용 -->
-      <div class="loading-message">로딩 중...</div>
-    </div>
-
   <div class="email-verification" v-show="isVisible">
     <h2>이메일 인증</h2>
     <button @click="mailSend" class="authNumCheckBtn">메일받기</button>
@@ -581,26 +582,6 @@ button:hover {
   background-color: #0056b3;
 }
 
-
-
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.8); /* 투명도 조절 가능 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.loading-message {
-  padding: 20px;
-  border-radius: 5px;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
 button[disabled] {
   cursor: not-allowed;

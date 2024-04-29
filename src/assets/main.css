@@ -136,6 +136,20 @@ nav a:hover {
     color: #fff;
 }
 
+/* 로딩 중일 때 이미지 스타일 */
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.5); /* 투명도 조절 가능 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media (max-width: 767px) {
     .content {
         max-height: calc(100vh - 0px); /* 화면 전체 높이에서 헤더와 푸터의 높이를 뺀 값으로 설정 */
