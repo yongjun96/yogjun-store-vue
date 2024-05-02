@@ -61,15 +61,21 @@ export default {
   mounted() {
 
     // 로컬 스토리지에서 accessToken을 가져와서 email 체크
-    const token = localStorage.getItem('accessToken');
-    this.token = token;
 
-    console.log(token);
-    const decodedToken = VueJwtDecode.decode(token);
+    if(localStorage.getItem('accessToken') !== null) {
 
-    this.tokenEmail = decodedToken.sub;
+      const token = localStorage.getItem('accessToken');
+      this.token = token;
+
+      console.log(token);
+      const decodedToken = VueJwtDecode.decode(token);
+
+      this.tokenEmail = decodedToken.sub;
+
+    }
 
     this.roomPost.id = this.$route.query.id;
+
     console.log("해당 글 번호 : "+this.roomPost.id); // 해당 글 번호
 
     this.getRoomPost();
