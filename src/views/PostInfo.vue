@@ -48,7 +48,12 @@ export default {
 
   computed: {
     loginEmailCheck(){
-      return this.tokenEmail == this.roomPost.member.email;
+      if(this.roomPost.member.email !== null ||
+          this.roomPost.member.email !== ''){
+        return this.tokenEmail == this.roomPost.member.email;
+      }
+
+      return null;
     }
   },
 
